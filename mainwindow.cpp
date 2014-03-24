@@ -18,7 +18,7 @@
 #include <map>
 #include <ctime>
 
-#include "generatedialog.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -53,6 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->surface,SIGNAL(setE1(double)),this,SLOT(setE1State(double)));
 	connect(ui->surface,SIGNAL(setE2(double)),this,SLOT(setE2State(double)));
 	connect(ui->surface,SIGNAL(setM(double)),this,SLOT(setMState(double)));
+
+    graphics = new MyGraphicsView();
+    this->ui->surface->setScene(graphics);
 }
 
 MainWindow::~MainWindow()
@@ -289,7 +292,7 @@ void MainWindow::generate()
     config::Instance()->partR = gd->getR();
     config::Instance()->m = gd->getM();
     Parts->resize(gd->getW(), gd->getH(), 1); //изменяем размеры системы (параметры чистятся автоматически)
-    ui->surface->clearMousePointers();
+    graphics->clearMousePointers();
     switch (gd->getMode()){
     case 0: //случайно по плотности
         Parts->dropRandom(gd->getC());

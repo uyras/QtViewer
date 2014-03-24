@@ -9,14 +9,14 @@
 #include "partgraphicsitem.h"
 #include "Part.h"
 
-class MyGraphicsView : public QGraphicsView
+class MyGraphicsView : public QGraphicsScene
 {
     Q_OBJECT
 public:
     explicit MyGraphicsView(QObject *parent = 0);
 
     QPoint startDot, endDot;
-    QGraphicsLineItem *pLine;
+    QGraphicsLineItem *pLine = NULL;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

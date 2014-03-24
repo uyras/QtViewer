@@ -16,9 +16,9 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="2">
-     <widget class="MyGraphicsView" name="surface">
+     <widget class="QGraphicsView" name="surface">
       <property name="interactive">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="sceneRect">
        <rectf>
@@ -334,13 +334,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>MyGraphicsView</class>
-   <extends>QGraphicsView</extends>
-   <header>mygraphicsview.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

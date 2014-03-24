@@ -1,22 +1,21 @@
 #include "mygraphicsview.h"
 
 MyGraphicsView::MyGraphicsView(QObject *parent) :
-    QGraphicsView(),
+    QGraphicsScene(),
     pLine(new QGraphicsLineItem())
 {
     Q_UNUSED(parent);
-    this->setScene(new QGraphicsScene());
-
-    scene()->addItem(pLine);
 }
 
 void MyGraphicsView::mousePressEvent(QMouseEvent *event){
+    this->endDot = this->startDot = event->pos();
 
-    this->startDot.setX(event->pos().x());
-    this->startDot.setY(event->pos().y());
+    if (!this->items().contains(pLine)){
+        this->addItem(pLine);
+    }
 
     //делаем все точки белыми
-	QList<QGraphicsItem *> l = scene()->items();
+    QList<QGraphicsItem *> l = this->items();
     PartGraphicsItem *temp;
 	for (int i=0;i<l.size();i++){
         temp = qgraphicsitem_cast<PartGraphicsItem *>(l[i]);
@@ -26,19 +25,19 @@ void MyGraphicsView::mousePressEvent(QMouseEvent *event){
 }
 
 void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event){
-    this->endDot.setX(event->pos().x());
-    this->endDot.setY(event->pos().y());
+    this->endDot = event->pos();
+    pLine->setLine(QLine(startDot,endDot));
 
     //подсвечиваем выделенные точки красными
 	QList<QGraphicsItem *> l1,l2,l;
 	PartGraphicsItem *temp, *startT=0, *endT=0;
     if (startDot==endDot){
-        pLine->setLine(0,0,0,0);
+        this->removeItem(pLine);
 
-		temp = qgraphicsitem_cast<PartGraphicsItem *>(scene()->itemAt((qreal)startDot.x(),(qreal)startDot.y(),QTransform()));
+        temp = qgraphicsitem_cast<PartGraphicsItem *>(this->itemAt((qreal)startDot.x(),(qreal)startDot.y(),QTransform()));
 		if (temp !=0){
 			Part *tempP = temp->P();
-			l1 =	scene()->items();
+            l1 =	this->items();
 			for (int i=0;i<l1.size();i++){
 				temp = qgraphicsitem_cast<PartGraphicsItem *>(l1[i]);
 				if (temp!=0 && temp->P() != tempP){
@@ -49,8 +48,8 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event){
 		}
 
 	} else {
-		l1 = scene()->items(QPointF(startDot.x(),startDot.y()));
-		l2 = scene()->items(QPointF(endDot.x(),endDot.y()));
+        l1 = this->items(QPointF(startDot.x(),startDot.y()));
+        l2 = this->items(QPointF(endDot.x(),endDot.y()));
 
 		for (int i=0;i<l1.size();i++){
 			temp = qgraphicsitem_cast<PartGraphicsItem *>(l1[i]);
@@ -76,9 +75,8 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event){
 }
 
 void MyGraphicsView::mouseMoveEvent(QMouseEvent *event){
-    this->endDot.setX(event->pos().x());
-    this->endDot.setY(event->pos().y());
-	pLine->setLine(startDot.x(),startDot.y(),endDot.x(),endDot.y());
+        this->endDot = event->pos();
+        pLine->setLine(QLine(startDot,endDot));
 }
 
 void MyGraphicsView::clearMousePointers(){
@@ -92,7 +90,7 @@ void MyGraphicsView::reDraw(PartArray* parts){
     Q_UNUSED(parts);
     QList<QGraphicsItem *> l;
     PartGraphicsItem *temp;
-    l = scene()->items();
+    l = this->items();
     for (int i=0;i<l.size();i++){
         temp = qgraphicsitem_cast<PartGraphicsItem *>(l[i]);
         if (temp!=0){
@@ -101,15 +99,15 @@ void MyGraphicsView::reDraw(PartArray* parts){
                 temp->setH(QPointF(temp->P()->h.x,temp->P()->h.y));
         }
     }
-    emit scene()->update();
+    emit this->update();
 }
 
 void MyGraphicsView::fullReDraw(PartArray* parts){
     //чистим плоскость
-    scene()->clear();
+    this->clear();
     //восстанавливаем линию
     pLine = new QGraphicsLineItem();
-    scene()->addItem(pLine);
+    this->addItem(pLine);
 
 
 
@@ -130,7 +128,7 @@ void MyGraphicsView::fullReDraw(PartArray* parts){
                     QPointF((*iter)->h.x,(*iter)->h.y)
                     );
         temp->setPos((*iter)->pos.x,(*iter)->pos.y);
-        scene()->addItem(temp);
+        this->addItem(temp);
 
         iter++;
         i++;
@@ -141,6 +139,6 @@ void MyGraphicsView::scaleTo(int size){
     double size2 = (qreal(size))/50.;
     QMatrix matrix;
     matrix.scale(size2, size2);
-    setMatrix(matrix);
+    //setMatrix(matrix);
 
 }

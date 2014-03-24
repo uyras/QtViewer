@@ -7,6 +7,7 @@
 #include "PartArray.h"
 #include "Part.h"
 #include <vector>
+#include "mygraphicsview.h"
 
 namespace Ui {
 class MainWindow;
@@ -70,6 +71,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    MyGraphicsView *graphics;
 
     generateDialog* gd;
     void emptyENFolder();
