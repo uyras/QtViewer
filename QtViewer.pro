@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     generatedialog.cpp \
     mygraphicsview.cpp \
-    partgraphicsitem.cpp
+    partgraphicsitem.cpp \
+    mygraphicsscene.cpp
 
 HEADERS  += mainwindow.h \
     generatedialog.h \
     mygraphicsview.h \
-    partgraphicsitem.h
+    partgraphicsitem.h \
+    mygraphicsscene.h
 
 FORMS    += mainwindow.ui \
     generatedialog.ui

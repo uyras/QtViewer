@@ -33,9 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(gd,SIGNAL(accepted()),this,SLOT(generate()));
 
 	//нопочки и контрллы
-	connect(this,SIGNAL(drawParts(PartArray*)),ui->surface,SLOT(fullReDraw(PartArray*)));
-	connect(this,SIGNAL(reDrawParts(PartArray*)),ui->surface,SLOT(reDraw(PartArray*)));
-	connect(ui->scaler,SIGNAL(valueChanged(int)),ui->surface,SLOT(scaleTo(int)));
+    connect(this,SIGNAL(drawParts(PartArray*)),ui->surface->scene(),SLOT(fullReDraw(PartArray*)));
+    connect(this,SIGNAL(reDrawParts(PartArray*)),ui->surface->scene(),SLOT(reDraw(PartArray*)));
+    connect(ui->scaler,SIGNAL(valueChanged(int)),ui->surface,SLOT(scaleTo(int)));
 	connect(ui->resizeSystem,SIGNAL(clicked()),this,SLOT(scaleSystem())); //масштабирование системы
 	connect(ui->showH,SIGNAL(clicked()),this,SLOT(calcH()));//кнопка "показать H"
 
@@ -50,12 +50,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->statusBar->addWidget(mState);
 	ui->statusBar->addWidget(e1State);
 	ui->statusBar->addWidget(e2State);
-	connect(ui->surface,SIGNAL(setE1(double)),this,SLOT(setE1State(double)));
-	connect(ui->surface,SIGNAL(setE2(double)),this,SLOT(setE2State(double)));
-	connect(ui->surface,SIGNAL(setM(double)),this,SLOT(setMState(double)));
+    connect(ui->surface->scene(),SIGNAL(setE1(double)),this,SLOT(setE1State(double)));
+    connect(ui->surface->scene(),SIGNAL(setE2(double)),this,SLOT(setE2State(double)));
+    connect(ui->surface->scene(),SIGNAL(setM(double)),this,SLOT(setMState(double)));
 
-    graphics = new MyGraphicsView();
-    this->ui->surface->setScene(graphics);
 }
 
 MainWindow::~MainWindow()
@@ -292,7 +290,7 @@ void MainWindow::generate()
     config::Instance()->partR = gd->getR();
     config::Instance()->m = gd->getM();
     Parts->resize(gd->getW(), gd->getH(), 1); //изменяем размеры системы (параметры чистятся автоматически)
-    graphics->clearMousePointers();
+    this->ui->surface->scene()->clearMousePointers();
     switch (gd->getMode()){
     case 0: //случайно по плотности
         Parts->dropRandom(gd->getC());

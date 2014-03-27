@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>503</height>
+    <width>932</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="2">
-     <widget class="QGraphicsView" name="surface">
+     <widget class="MyGraphicsView" name="surface">
       <property name="interactive">
        <bool>true</bool>
       </property>
@@ -321,7 +321,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>618</width>
+     <width>932</width>
      <height>21</height>
     </rect>
    </property>
@@ -334,6 +334,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>MyGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>mygraphicsview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

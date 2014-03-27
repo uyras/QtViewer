@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QPainter>
+#include <QDebug>
 
 #include <Part.h>
 #include <config.h>

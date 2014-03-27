@@ -8,6 +8,8 @@ PartGraphicsItem::PartGraphicsItem(double radius, Part *p, QPointF m, QPointF h)
     setM(m);
     setH(h);
     setPart(p);
+    this->setFlag(PartGraphicsItem::ItemIsSelectable);
+    ellipseBrush.setColor(Qt::red);
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
@@ -26,14 +28,20 @@ QPainterPath PartGraphicsItem::shape() const{
 void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget){
     Q_UNUSED(widget);
     Q_UNUSED(item);
+    QColor col;
 
     if (P()->h.length()>0 && P()->h.scalar(P()->m)<0){
-		painter->setBrush(QBrush(QColor(240,190,15)));
+        col = QColor(240,190,15);
 	} else
         if (P()->state)
-			painter->setBrush(QBrush(QColor(255,145,145)));
+            col = QColor(255,145,145);
 		else
-			painter->setBrush(ellipseBrush);
+            col = ellipseBrush.color();
+
+    if (this->isSelected())
+        col = col.lighter(150);
+
+    painter->setBrush(QBrush(col));
 
 	painter->drawEllipse(QPointF(0,0),Radius(),Radius());
 

@@ -72,8 +72,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    MyGraphicsView *graphics;
-
     generateDialog* gd;
     void emptyENFolder();
 
