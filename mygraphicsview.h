@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QMouseEvent>
+#include <QScrollBar>
 
 #include "mygraphicsscene.h"
 #include "PartArray.h"
@@ -17,8 +18,14 @@ public:
     MyGraphicsScene* scene();
     MyGraphicsScene* _scene;
 
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void wheelEvent(QWheelEvent *event);
+
     
 signals:
+    void scaleUp();
+    void scaleDown();
     
 public slots:
 

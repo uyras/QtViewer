@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->resizeSystem,SIGNAL(clicked()),this,SLOT(scaleSystem())); //масштабирование системы
 	connect(ui->showH,SIGNAL(clicked()),this,SLOT(calcH()));//кнопка "показать H"
 
+
 	//пересчет параметров при изменении системы
 	connect(this,SIGNAL(drawParts(PartArray*)),SLOT(recalcParameters(PartArray*)));
 	connect(this,SIGNAL(reDrawParts(PartArray*)),SLOT(recalcParameters(PartArray*)));
@@ -54,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->surface->scene(),SIGNAL(setE2(double)),this,SLOT(setE2State(double)));
     connect(ui->surface->scene(),SIGNAL(setM(double)),this,SLOT(setMState(double)));
 
+    //масштабирование визуальной области
+    connect(ui->surface, SIGNAL(scaleUp()), this, SLOT(scaleUp()));
+    connect(ui->surface, SIGNAL(scaleDown()), this, SLOT(scaleDown()));
 }
 
 MainWindow::~MainWindow()
@@ -290,7 +294,7 @@ void MainWindow::generate()
     config::Instance()->partR = gd->getR();
     config::Instance()->m = gd->getM();
     Parts->resize(gd->getW(), gd->getH(), 1); //изменяем размеры системы (параметры чистятся автоматически)
-    this->ui->surface->scene()->clearMousePointers();
+    this->ui->surface->scene()->clearSelection();
     switch (gd->getMode()){
     case 0: //случайно по плотности
         Parts->dropRandom(gd->getC());
@@ -437,6 +441,14 @@ void MainWindow::setE2State(double e2){
 void MainWindow::scaleSystem(){
 	Parts->scaleSystem(ui->resizeDelimiter->value());
 	emit drawParts(Parts);
+}
+
+void MainWindow::scaleUp(){
+    ui->scaler->setValue(ui->scaler->value() + ui->scaler->pageStep());
+}
+
+void MainWindow::scaleDown(){
+    ui->scaler->setValue(ui->scaler->value() - ui->scaler->pageStep());
 }
 
 void MainWindow::on_pushButton_clicked()

@@ -8,8 +8,8 @@ PartGraphicsItem::PartGraphicsItem(double radius, Part *p, QPointF m, QPointF h)
     setM(m);
     setH(h);
     setPart(p);
-    this->setFlag(PartGraphicsItem::ItemIsSelectable);
-    ellipseBrush.setColor(Qt::white);
+    this->setFlags(PartGraphicsItem::ItemIsSelectable | PartGraphicsItem::ItemIsMovable);
+    ellipseBrush.setColor(Qt::green);
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
@@ -97,12 +97,6 @@ void PartGraphicsItem::setRadius(const double r){
 void PartGraphicsItem::setPart(Part *p){
     this->p = p;
 }
-
-/*
-QPointF PartGraphicsItem::Pos(){
-    return this->pos*multiplier;
-}
-*/
 
 QPointF PartGraphicsItem::M() const{
     return this->m*multiplier;

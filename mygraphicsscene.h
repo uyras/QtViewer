@@ -15,21 +15,13 @@ public:
     explicit MyGraphicsScene(QObject *parent = 0);
 
     QPointF startDot, endDot;
-    QGraphicsLineItem *pLine = NULL;
-
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 signals:
     void setM(double);
     void setE1(double);
     void setE2(double);
-    void selectPart(PartGraphicsItem*); //устанавливает частицу как выделенную
 
 public slots:
-    //очищает указатели мыши
-    void clearMousePointers();
     void fullReDraw(PartArray*);
     //обновляет
     void reDraw(PartArray*);

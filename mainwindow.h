@@ -60,7 +60,10 @@ public slots:
 	void recalcParameters(); //пересчитать параметры системы
 	void recalcParameters(PartArray*); //пересчитать параметры системы (перегрузка для сигналов)
 
-	void scaleSystem(); //масштабировать систему
+    void scaleSystem(); //масштабировать систему (не меняя диаметра частиц)
+
+    void scaleUp(); //Увеличивает масштаб области отображения
+    void scaleDown(); //уменьшает масштаб области отображения
 
 signals:
 	void drawParts(PartArray*); //нарисовать частицы
