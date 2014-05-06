@@ -25,6 +25,7 @@ signals:
     void setM(double);
     void setE1(double);
     void setE2(double);
+    void selectPart(PartGraphicsItem*); //устанавливает частицу как выделенную
 
 public slots:
     //очищает указатели мыши
@@ -32,6 +33,9 @@ public slots:
     void fullReDraw(PartArray*);
     //обновляет
     void reDraw(PartArray*);
+
+private:
+    bool pressed;
 };
 
 #endif // MYGRAPHICSSCENE_H

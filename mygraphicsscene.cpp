@@ -2,12 +2,14 @@
 
 MyGraphicsScene::MyGraphicsScene(QObject *parent) :
     QGraphicsScene(parent),
-    pLine(new QGraphicsLineItem())
+    pLine(new QGraphicsLineItem()),
+    pressed(false)
 {
     Q_UNUSED(parent);
 }
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
+    pressed = true;
     this->endDot = this->startDot = event->scenePos();
 
     if (!this->items().contains(pLine)){
@@ -27,28 +29,22 @@ void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 }
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
+    pressed=false;
     this->endDot = event->scenePos();
 
     //подсвечиваем выделенные точки красными
     QList<QGraphicsItem *> l1,l2,l;
-    PartGraphicsItem *temp, *startT=0, *endT=0;
+    PartGraphicsItem *temp;
     if (startDot==endDot){
         QPointF click = startDot;
         emit clearMousePointers();
         temp = qgraphicsitem_cast<PartGraphicsItem *>(this->itemAt((qreal)click.x(),(qreal)click.y(),QTransform()));
-        if (temp !=0){
-            Part *tempP = temp->P();
-            l1 =	this->items();
-            for (int i=0;i<l1.size();i++){
-                temp = qgraphicsitem_cast<PartGraphicsItem *>(l1[i]);
-                if (temp!=0 && temp->P() != tempP){
-                    Vect h1 = temp->P()->interact(tempP);
-                    temp->setH(QPointF(h1.x,h1.y));
-                }
-            }
+        if (temp != NULL){
+            selectPart(temp);
         }
 
     } else {
+        emit
         this->clearSelection();
         temp = qgraphicsitem_cast<PartGraphicsItem *>(this->itemAt(startDot.rx(), startDot.ry(), QTransform()));
         if (temp!=NULL)
@@ -57,35 +53,15 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
         temp = qgraphicsitem_cast<PartGraphicsItem *>(this->itemAt(endDot.rx(), endDot.ry(), QTransform()));
         if (temp!=NULL)
             temp->setSelected(true);
-
-/*
-        for (int i=0;i<l1.size();i++){
-            temp = qgraphicsitem_cast<PartGraphicsItem *>(l1[i]);
-            if (temp!=0) {
-                //temp->setBrush(Qt::yellow);
-                startT = temp;
-            }
-        }
-        for (int i=0;i<l2.size();i++){
-            temp = qgraphicsitem_cast<PartGraphicsItem *>(l2[i]);
-            if (temp!=0) {
-                //temp->setBrush(Qt::yellow);
-                endT = temp;
-            }
-        }
-        if (startT!=0 && endT!=0){
-            Vect h = endT->P()->interact(startT->P());
-            emit setE1(h.scalar(startT->P()->m));
-        }*/
     }
 
-
-    //получаем связанные частицы и считае
 }
 
 void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
-    this->endDot = event->scenePos();
-    pLine->setLine(QLineF(startDot,endDot));
+    if (pressed){
+        this->endDot = event->scenePos();
+        pLine->setLine(QLineF(startDot,endDot));
+    }
 }
 
 void MyGraphicsScene::clearMousePointers(){

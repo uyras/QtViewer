@@ -9,7 +9,7 @@ PartGraphicsItem::PartGraphicsItem(double radius, Part *p, QPointF m, QPointF h)
     setH(h);
     setPart(p);
     this->setFlag(PartGraphicsItem::ItemIsSelectable);
-    ellipseBrush.setColor(Qt::red);
+    ellipseBrush.setColor(Qt::white);
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
@@ -39,7 +39,7 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             col = ellipseBrush.color();
 
     if (this->isSelected())
-        col = col.lighter(150);
+        col = col.darker(50);
 
     painter->setBrush(QBrush(col));
 
