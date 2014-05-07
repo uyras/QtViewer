@@ -75,3 +75,22 @@ void MyGraphicsScene::_addRule(){
         this->addLine(h,y,h-length,y,QPen(Qt::black));
     }
 }
+
+void MyGraphicsScene::keyPressEvent(QKeyEvent *event){
+    switch (event->key()) {
+    case Qt::Key_Up:
+        emit moveUp(this->selectedItems());
+        break;
+    case Qt::Key_Down:
+        emit moveDown(this->selectedItems());
+        break;
+    case Qt::Key_Left:
+        emit moveLeft(this->selectedItems());
+        break;
+    case Qt::Key_Right:
+        emit moveRight(this->selectedItems());
+        break;
+    default:
+        break;
+    }
+}

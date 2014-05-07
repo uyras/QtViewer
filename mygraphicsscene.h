@@ -5,6 +5,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+#include <QKeyEvent>
 #include "PartArray.h"
 #include "partgraphicsitem.h"
 
@@ -30,6 +31,7 @@ private:
     bool pressed;
     void _addBorders();
     void _addRule();
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // MYGRAPHICSSCENE_H
