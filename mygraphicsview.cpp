@@ -22,16 +22,18 @@ void MyGraphicsView::scaleTo(int size){
 }
 
 void MyGraphicsView::keyPressEvent(QKeyEvent *event){
-    if (event->modifiers() & (Qt::ShiftModifier | Qt::AltModifier | Qt::ControlModifier)){
+    if (event->modifiers() & (Qt::ShiftModifier | Qt::AltModifier)){
         this->setDragMode(QGraphicsView::ScrollHandDrag);
         this->setInteractive(false);
+        event->accept();
     }
 }
 
 void MyGraphicsView::keyReleaseEvent(QKeyEvent *event){
-    if ( !(event->modifiers()&(Qt::ShiftModifier | Qt::AltModifier | Qt::ControlModifier))){
+    if ( !(event->modifiers()&(Qt::ShiftModifier | Qt::AltModifier))){
         this->setDragMode(QGraphicsView::RubberBandDrag);
         this->setInteractive(true);
+        event->accept();
     }
 }
 

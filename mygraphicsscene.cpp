@@ -12,7 +12,9 @@ void MyGraphicsScene::fullReDraw(PartArray* parts){
     this->clear();
     this->setSceneRect(0,0,parts->size.x*20,parts->size.y*20);
 
-
+    //добавляем окантовку и оси
+    this->_addBorders();
+    this->_addRule();
 
     //рисуем частицы
     vector<Part*>::iterator
@@ -53,4 +55,23 @@ void MyGraphicsScene::reDraw(PartArray* parts){
         }
     }
     emit this->update();
+}
+
+void MyGraphicsScene::_addBorders(){
+    this->addRect(this->sceneRect(),QPen(Qt::black));
+}
+
+void MyGraphicsScene::_addRule(){
+    qreal w = this->width();
+    qreal h = this->height();
+    const int length = 3;
+    for (qreal x = 0; x<=w; x+=20){
+        this->addLine(x,0,x,length,QPen(Qt::black));
+        this->addLine(x,w,x,w-length,QPen(Qt::black));
+    }
+
+    for (qreal y = 0; y<=h; y+=20){
+        this->addLine(0,y,length,y,QPen(Qt::black));
+        this->addLine(h,y,h-length,y,QPen(Qt::black));
+    }
 }

@@ -28,6 +28,8 @@ public slots:
 
 private:
     bool pressed;
+    void _addBorders();
+    void _addRule();
 };
 
 #endif // MYGRAPHICSSCENE_H
