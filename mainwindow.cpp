@@ -24,8 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
-	ui->setupUi(this);
-	this->Parts = new PartArray();
+    ui->setupUi(this);
 
     //диалоговое окно
     gd = new generateDialog(this);
@@ -33,16 +32,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(gd,SIGNAL(accepted()),this,SLOT(generate()));
 
 	//нопочки и контрллы
-    connect(this,SIGNAL(drawParts(PartArray*)),ui->surface->scene(),SLOT(fullReDraw(PartArray*)));
-    connect(this,SIGNAL(reDrawParts(PartArray*)),ui->surface->scene(),SLOT(reDraw(PartArray*)));
+    connect(this,SIGNAL(drawParts()),ui->surface->scene(),SLOT(fullReDraw()));
+    connect(this,SIGNAL(reDrawParts()),ui->surface->scene(),SLOT(reDraw()));
     connect(ui->scaler,SIGNAL(valueChanged(int)),ui->surface,SLOT(scaleTo(int)));
 	connect(ui->resizeSystem,SIGNAL(clicked()),this,SLOT(scaleSystem())); //масштабирование системы
 	connect(ui->showH,SIGNAL(clicked()),this,SLOT(calcH()));//кнопка "показать H"
 
 
 	//пересчет параметров при изменении системы
-	connect(this,SIGNAL(drawParts(PartArray*)),SLOT(recalcParameters(PartArray*)));
-	connect(this,SIGNAL(reDrawParts(PartArray*)),SLOT(recalcParameters(PartArray*)));
+    connect(this,SIGNAL(drawParts()),SLOT(recalcParameters()));
+    connect(this,SIGNAL(reDrawParts()),SLOT(recalcParameters()));
 
 	//статус-бар
 	mState = new QLabel(this);
@@ -58,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //масштабирование визуальной области
     connect(ui->surface, SIGNAL(scaleUp()), this, SLOT(scaleUp()));
     connect(ui->surface, SIGNAL(scaleDown()), this, SLOT(scaleDown()));
+
+    this->Parts = ui->surface->scene();
 }
 
 MainWindow::~MainWindow()
@@ -66,8 +67,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::recalcParameters(){
-	Vect temp;
-	Parts->calcEnergy1();
+    /*Vect temp;
+    this->Parts->calcEnergy1();
 	ui->eVal->setText(QString::number(Parts->E1));
 
 	temp = Parts->calcM1();
@@ -85,7 +86,7 @@ void MainWindow::recalcParameters(){
 
 	//считаем H системы и отн. H системы
 	Vect h1,h2;
-    vector<Part*>::iterator iter1,iter2;
+    vector<PartGraphicsItem*>::iterator iter1,iter2;
 	iter1 = Parts->parts.begin();
 	while (iter1!=Parts->parts.end()){
 		iter2 = Parts->parts.begin();
@@ -110,11 +111,7 @@ void MainWindow::recalcParameters(){
 
 	ui->h1Val->setText(QString("{%1 , %2} , %3").arg(h1.x).arg(h1.y).arg(h1.length()));
 	ui->h2Val->setText(QString("{%1 , %2} , %3").arg(h2.x).arg(h2.y).arg(h2.length()));
-}
-
-void MainWindow::recalcParameters(PartArray* p){
-	Q_UNUSED(p);
-	recalcParameters();
+    */
 }
 
 void MainWindow::on_surface_destroyed()
@@ -132,110 +129,7 @@ void MainWindow::initParts()
 }
 
 void MainWindow::paintEvent(QPaintEvent *pe){
-	Q_UNUSED(pe);
-	/*
-	QPainter p(ui->surface);
-
-	const int scale = this->ui->scaler->value(), r = 0.5 * scale;
-
-	//рисуем границу
-	p.fillRect(0,0,Parts->size.x*scale,Parts->size.y*scale,Qt::white);
-
-	vector<Part>::iterator
-			begin = this->Parts->parts.begin(),
-			end = this->Parts->parts.end(),
-			first = end,
-			second = end,
-			iter = begin;
-
-	//рисуем кружки
-	p.setPen(QPen(Qt::red,1,Qt::SolidLine));
-	int i=0;
-	while (iter != this->Parts->parts.end()){
-
-		//определяем координаты конца и начала связи
-		if (!startDot.isNull() && !endDot.isNull()){
-			if ((startDot - QPoint(iter->pos.x * scale,iter->pos.y * scale)).manhattanLength() <= r)
-				first = iter;
-
-			if ((endDot - QPoint(iter->pos.x * scale,iter->pos.y * scale)).manhattanLength() <= r)
-				second = iter;
-		}
-
-		if ( ( ((int)std::pow(2.,(double)i)) & this->Parts->state)==0 )
-			p.setPen(Qt::green);
-		else
-			p.setPen(Qt::red);
-
-		if ( iter==first || iter == second )
-			p.setBrush(QBrush(QColor(0,255,0,150),Qt::DiagCrossPattern));
-		else
-			p.setBrush(QBrush(Qt::NoBrush));
-
-		p.drawEllipse(
-					iter->pos.x*scale - r,
-					iter->pos.y*scale - r,
-					r*2,r*2);
-		p.drawLine(
-					iter->pos.x * scale,
-					iter->pos.y * scale,
-					(iter->pos.x+iter->m.x) * scale,
-					(iter->pos.y+iter->m.y) * scale
-					);
-
-		iter++;
-		i++;
-	}
-
-	if (!startDot.isNull() && !endDot.isNull()){
-		p.drawLine(startDot,endDot);
-		if (first!=second && first != end && second != end){
-			QString ss;
-			ss.append("E=");
-			Vect h = second->interact(first.base());
-			ss.append(QString::number( h.scalar(first->m) ) );
-
-			p.setBackgroundMode(Qt::OpaqueMode);
-			p.drawText((startDot+endDot)/2,ss);
-			p.setBackgroundMode(Qt::TransparentMode);
-		}
-
-		//если выделили всего одну частицу, дорисовать векторы взаимодействия её на другие
-		if (first==second && first != end){
-			Vect h1;
-			p.setPen(Qt::red);
-			iter=begin;
-			while (iter != end){
-				if (first!=iter){
-					h1 = iter->interact(first.base());
-
-					p.drawLine(
-								iter->pos.x * scale,
-								iter->pos.y * scale,
-								(iter->pos.x+h1.x) * scale,
-								(iter->pos.y+h1.y) * scale
-								);
-				}
-				iter++;
-			}
-		}
-
-		//рисуем координаты частицы
-		if (first==second && first != end){
-			p.setPen(Qt::black);
-			QString ss;
-			ss.append("{");
-			ss.append(QString::number(first->pos.x));
-			ss.append(":");
-			ss.append(QString::number(first->pos.y));
-			ss.append("}");
-
-			p.setBackgroundMode(Qt::OpaqueMode);
-			p.drawText(startDot+QPoint(0,10),ss);
-			p.setBackgroundMode(Qt::TransparentMode);
-		}
-	}
-	*/
+    Q_UNUSED(pe);
 }
 
 void MainWindow::on_stateNum_valueChanged(unsigned long long int arg1)
@@ -251,20 +145,19 @@ void MainWindow::on_appendState_clicked()
 	this->Parts->calcEnergy1Fast();
 	this->ui->eVal->setText(QString::number(Parts->E1));
 
-	emit reDrawParts(Parts);
+    emit reDrawParts();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    /*
 	QTableWidget *et = this->findChild<QTableWidget *>("energyTable",Qt::FindDirectChildrenOnly);
 	et->setWindowFlags(Qt::Window);
 	et->setColumnCount(Parts->count());
 	et->setRowCount(Parts->count());
 
-	//et->set;
-
 	//получаем элементы в таблицу
-    vector<Part*>::iterator iter = this->Parts->parts.begin();
+    vector<PartGraphicsItem*>::iterator iter = this->Parts->parts.begin();
 
 	std::vector<double>::iterator eIter;
 	int i=0,j;
@@ -282,6 +175,7 @@ void MainWindow::on_pushButton_2_clicked()
 	}
 
 	et->showMaximized();
+    */
 }
 
 void MainWindow::on_genBtn_clicked()
@@ -293,8 +187,9 @@ void MainWindow::generate()
 {
     config::Instance()->partR = gd->getR();
     config::Instance()->m = gd->getM();
-    Parts->resize(gd->getW(), gd->getH(), 1); //изменяем размеры системы (параметры чистятся автоматически)
-    this->ui->surface->scene()->clearSelection();
+    Parts->resize(gd->getW(), gd->getH()); //изменяем размеры системы (параметры чистятся автоматически)
+    Parts->clearSelection();
+    Parts->clear();
     switch (gd->getMode()){
     case 0: //случайно по плотности
         Parts->dropRandom(gd->getC());
@@ -307,7 +202,8 @@ void MainWindow::generate()
     }
 
 	initParts();
-	emit drawParts(Parts);
+    Parts->fullReDraw();
+    emit drawParts();
 }
 
 void MainWindow::emptyENFolder(){
@@ -417,13 +313,13 @@ void MainWindow::loadParticles(){
 		this->Parts->load(cfilename);
 		initParts();
 
-		emit drawParts(Parts);
+        emit drawParts();
 	}
 }
 
 void MainWindow::clearParticles(){
 	Parts->clear();
-	emit drawParts(Parts);
+    emit drawParts();
 }
 
 void MainWindow::setMState(double m){
@@ -440,7 +336,7 @@ void MainWindow::setE2State(double e2){
 
 void MainWindow::scaleSystem(){
 	Parts->scaleSystem(ui->resizeDelimiter->value());
-	emit drawParts(Parts);
+    emit drawParts();
 }
 
 void MainWindow::scaleUp(){
@@ -454,10 +350,10 @@ void MainWindow::scaleDown(){
 void MainWindow::on_pushButton_clicked()
 {
 	Parts->setMAllUp();
-	emit drawParts(Parts);
+    emit drawParts();
 }
 
 void MainWindow::calcH(){
     Parts->calcH();
-	emit drawParts(Parts);
+    emit drawParts();
 }

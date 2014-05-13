@@ -4,13 +4,11 @@ MyGraphicsScene::MyGraphicsScene(QObject *parent) :
     QGraphicsScene(parent),
     pressed(false)
 {
+    setScale(20.);
     Q_UNUSED(parent);
 }
 
-void MyGraphicsScene::fullReDraw(PartArray* parts){
-    //чистим плоскость
-    this->clear();
-    this->setSceneRect(0,0,parts->size.x*20,parts->size.y*20);
+void MyGraphicsScene::fullReDraw(){
 
     //добавляем окантовку и оси
     this->_addBorders();
@@ -18,46 +16,87 @@ void MyGraphicsScene::fullReDraw(PartArray* parts){
 
     //рисуем частицы
     vector<Part*>::iterator
-            begin = parts->parts.begin(),
-            end = parts->parts.end(),
+            begin = PartArray::parts.begin(),
+            end = PartArray::parts.end(),
             iter = begin;
-
-    PartGraphicsItem *temp;
-
-    int i=0;
+    PartGraphicsItem* temp;
+    Part* temp2;
     while (iter != end){
-        temp = new PartGraphicsItem(
-                    0.5,
-                    (*iter),
-                    QPointF((*iter)->m.x,(*iter)->m.y),
-                    QPointF((*iter)->h.x,(*iter)->h.y)
-                    );
-        temp->setPos((*iter)->pos.x,(*iter)->pos.y);
+        temp2 = *iter;
+        temp = reinterpret_cast<PartGraphicsItem*>(temp2);
+        this->parts.push_back(temp);
         this->addItem(temp);
-
         iter++;
-        i++;
     }
 }
 
 
-void MyGraphicsScene::reDraw(PartArray* parts){
-    Q_UNUSED(parts);
-    QList<QGraphicsItem *> l;
-    PartGraphicsItem *temp;
-    l = this->items();
-    for (int i=0;i<l.size();i++){
-        temp = qgraphicsitem_cast<PartGraphicsItem *>(l[i]);
-        if (temp!=0){
-            temp->setM(QPointF(temp->P()->m.x,temp->P()->m.y));
-            if (temp->P()->h.length()!=0)
-                temp->setH(QPointF(temp->P()->h.x,temp->P()->h.y));
-        }
-    }
+void MyGraphicsScene::reDraw(){
     emit this->update();
 }
 
+void MyGraphicsScene::moveUp(float size=0.1)
+{
+    QList<QGraphicsItem*> items = selectedItems();
+    QList<QGraphicsItem*>::Iterator i;
+    PartGraphicsItem *temp;
+    for(i=items.begin(); i!=items.end(); i++){
+        temp = qgraphicsitem_cast<PartGraphicsItem *>(*i);
+        temp->setPos(temp->pos.x+size,temp->pos.y);
+    }
+}
+
+void MyGraphicsScene::moveDown(float size=0.1)
+{
+
+}
+
+void MyGraphicsScene::moveLeft(float size=0.1)
+{
+
+}
+
+void MyGraphicsScene::moveRight(float size=0.1)
+{
+
+}
+
+float MyGraphicsScene::getScale() const
+{
+    return scale;
+}
+
+void MyGraphicsScene::setScale(float value)
+{
+    scale = value;
+}
+
+void MyGraphicsScene::insert(Part *part)
+{
+    PartGraphicsItem *temp = dynamic_cast<PartGraphicsItem*>(part);
+    this->parts.push_back(temp);
+    PartArray::insert(part);
+}
+
+void MyGraphicsScene::addParts()
+{
+
+}
+
+void MyGraphicsScene::clear()
+{
+    PartArray::clear();
+    QGraphicsScene::clear();
+}
+
+void MyGraphicsScene::resize(double x, double y)
+{
+    PartArray::resize(x,y,1);
+    this->setSceneRect(0,0,this->size.x*getScale(),this->size.y*getScale());
+}
+
 void MyGraphicsScene::_addBorders(){
+    QGraphicsItem* i;
     this->addRect(this->sceneRect(),QPen(Qt::black));
 }
 
@@ -65,12 +104,12 @@ void MyGraphicsScene::_addRule(){
     qreal w = this->width();
     qreal h = this->height();
     const int length = 3;
-    for (qreal x = 0; x<=w; x+=20){
+    for (qreal x = 0; x<=w; x+=getScale()){
         this->addLine(x,0,x,length,QPen(Qt::black));
         this->addLine(x,w,x,w-length,QPen(Qt::black));
     }
 
-    for (qreal y = 0; y<=h; y+=20){
+    for (qreal y = 0; y<=h; y+=getScale()){
         this->addLine(0,y,length,y,QPen(Qt::black));
         this->addLine(h,y,h-length,y,QPen(Qt::black));
     }
@@ -79,16 +118,16 @@ void MyGraphicsScene::_addRule(){
 void MyGraphicsScene::keyPressEvent(QKeyEvent *event){
     switch (event->key()) {
     case Qt::Key_Up:
-        emit moveUp(this->selectedItems());
+        emit moveUp();
         break;
     case Qt::Key_Down:
-        emit moveDown(this->selectedItems());
+        emit moveDown();
         break;
     case Qt::Key_Left:
-        emit moveLeft(this->selectedItems());
+        emit moveLeft();
         break;
     case Qt::Key_Right:
-        emit moveRight(this->selectedItems());
+        emit moveRight();
         break;
     default:
         break;

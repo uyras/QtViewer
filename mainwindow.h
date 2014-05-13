@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    PartArray* Parts;
+    MyGraphicsScene* Parts;
 
 
 public slots:
@@ -57,8 +57,7 @@ public slots:
     void setE1State(double e1);
     void setE2State(double e2);
 
-	void recalcParameters(); //пересчитать параметры системы
-	void recalcParameters(PartArray*); //пересчитать параметры системы (перегрузка для сигналов)
+    void recalcParameters(); //пересчитать параметры системы
 
     void scaleSystem(); //масштабировать систему (не меняя диаметра частиц)
 
@@ -66,8 +65,8 @@ public slots:
     void scaleDown(); //уменьшает масштаб области отображения
 
 signals:
-	void drawParts(PartArray*); //нарисовать частицы
-	void reDrawParts(PartArray*); //перерисовать частицы
+    void drawParts(); //нарисовать частицы
+    void reDrawParts(); //перерисовать частицы
 
 private slots:
 	void on_pushButton_clicked();

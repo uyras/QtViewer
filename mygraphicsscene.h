@@ -6,16 +6,26 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 #include <QKeyEvent>
+#include <vector>
 #include "PartArray.h"
 #include "partgraphicsitem.h"
 
-class MyGraphicsScene : public QGraphicsScene
+class PartGraphicsItem;
+
+class MyGraphicsScene : public QGraphicsScene, virtual public PartArray
 {
     Q_OBJECT
 public:
     explicit MyGraphicsScene(QObject *parent = 0);
 
     QPointF startDot, endDot;
+    int E1;
+
+    float getScale() const;
+    void setScale(float value);
+    void insert(Part *part);
+
+    std::vector<PartGraphicsItem*> parts;
 
 signals:
     void setM(double);
@@ -23,11 +33,19 @@ signals:
     void setE2(double);
 
 public slots:
-    void fullReDraw(PartArray*);
+    void addParts();
+    void fullReDraw();
     //обновляет
-    void reDraw(PartArray*);
+    void reDraw();
+    void moveUp(float size);
+    void moveDown(float size);
+    void moveLeft(float size);
+    void moveRight(float size);
+    void clear();
+    void resize(double x, double y);
 
 private:
+    float scale;
     bool pressed;
     void _addBorders();
     void _addRule();

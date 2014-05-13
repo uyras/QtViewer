@@ -1,20 +1,19 @@
 #include "partgraphicsitem.h"
 #include <cmath>
 
-PartGraphicsItem::PartGraphicsItem(double radius, Part *p, QPointF m, QPointF h):
-    multiplier(20)
+PartGraphicsItem::PartGraphicsItem(double radius, Vect m, Vect h)
 {
     setRadius(radius);
     setM(m);
     setH(h);
-    setPart(p);
     this->setFlags(PartGraphicsItem::ItemIsSelectable | PartGraphicsItem::ItemIsMovable);
     ellipseBrush.setColor(Qt::green);
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
-	double ml = sqrt(M().x()* M().x() + M().y()* M().y()),
-			hl = sqrt(H().x()* H().x() + H().y()* H().y());
+    double coff = (scene())->getScale();
+    double ml = sqrt(M().x* M().x*coff*coff + M().y* M().y*coff*coff),
+            hl = sqrt(H().x* H().x*coff*coff + H().y* H().y*coff*coff);
 	double max = qMax<double>(Radius(), qMax<double>(ml,hl));
 	return QRectF(-1*max, -1*max, 2*max, 2*max);
 }
@@ -29,11 +28,12 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(widget);
     Q_UNUSED(item);
     QColor col;
+    double coff = (scene())->getScale();
 
-    if (P()->h.length()>0 && P()->h.scalar(P()->m)<0){
+    if (this->h.length()>0 && this->h.scalar(this->m)<0){
         col = QColor(240,190,15);
 	} else
-        if (P()->state)
+        if (this->state)
             col = QColor(255,145,145);
 		else
             col = ellipseBrush.color();
@@ -48,15 +48,15 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QPen oldPen = painter->pen();
 
     //магнитный момент
-    if (!M().isNull()){
+    if (M().length()>0){
         painter->setPen(Qt::red);
-        painter->drawLine(QPointF(0,0),M());
+        painter->drawLine(0,0,M().x*coff,M().y*coff);
     }
 
     //поле взаимодействия
-    if (!H().isNull()){
+    if (H().length()>0){
         painter->setPen(Qt::blue);
-        painter->drawLine(QPointF(0,0),H());
+        painter->drawLine(0,0,H().x*coff,H().y*coff);
     }
 
     painter->setPen(oldPen);
@@ -74,17 +74,19 @@ void PartGraphicsItem::setBrush(const QBrush &b){
 }
 
 void PartGraphicsItem::setPos(const qreal x, const qreal y){
-    QPointF pos2 = QPointF(x*multiplier,y*multiplier);
+    double coff = (scene())->getScale();
+    this->pos.x = x; this->pos.y = y;
+    QPointF pos2 = QPointF(x*coff,y*coff);
     QGraphicsItem::setPos(pos2);
     update();
 }
 
-void PartGraphicsItem::setM(const QPointF &m){
+void PartGraphicsItem::setM(Vect m){
     this->m = m;
     update();
 }
 
-void PartGraphicsItem::setH(const QPointF &h){
+void PartGraphicsItem::setH(Vect h){
     this->h = h;
     update();
 }
@@ -94,23 +96,21 @@ void PartGraphicsItem::setRadius(const double r){
     update();
 }
 
-void PartGraphicsItem::setPart(Part *p){
-    this->p = p;
+Vect PartGraphicsItem::M() const{
+    return this->m;
 }
 
-QPointF PartGraphicsItem::M() const{
-    return this->m*multiplier;
-}
-
-QPointF PartGraphicsItem::H() const{
-    return this->h*multiplier;
+Vect PartGraphicsItem::H() const{
+    return this->h;
 }
 
 double PartGraphicsItem::Radius() const{
-    return config::Instance()->partR*multiplier;
+    double coff = (scene())->getScale();
+    return config::Instance()->partR*coff;
     //return this->radius*multiplier;
 }
 
-Part* PartGraphicsItem::P() const{
-    return this->p;
+MyGraphicsScene* PartGraphicsItem::scene() const
+{
+    return qobject_cast<MyGraphicsScene*>(QGraphicsItem::scene());
 }
