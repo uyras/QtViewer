@@ -12,7 +12,7 @@
 
 class PartGraphicsItem;
 
-class MyGraphicsScene : public QGraphicsScene, virtual public PartArray
+class MyGraphicsScene : public QGraphicsScene, public PartArray
 {
     Q_OBJECT
 public:
@@ -21,11 +21,12 @@ public:
     QPointF startDot, endDot;
     int E1;
 
+    std::vector<PartGraphicsItem*> parts;
+
     float getScale() const;
     void setScale(float value);
     void insert(Part *part);
-
-    std::vector<PartGraphicsItem*> parts;
+    void attach(Part *part);
 
 signals:
     void setM(double);
@@ -43,6 +44,8 @@ public slots:
     void moveRight(float size);
     void clear();
     void resize(double x, double y);
+    void dropRandom(double maxDestiny);
+
 
 private:
     float scale;

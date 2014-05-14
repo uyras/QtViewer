@@ -1,11 +1,9 @@
 #include "partgraphicsitem.h"
 #include <cmath>
 
-PartGraphicsItem::PartGraphicsItem(double radius, Vect m, Vect h)
+PartGraphicsItem::PartGraphicsItem(Part *p)
 {
-    setRadius(radius);
-    setM(m);
-    setH(h);
+    setPart(p);
     this->setFlags(PartGraphicsItem::ItemIsSelectable | PartGraphicsItem::ItemIsMovable);
     ellipseBrush.setColor(Qt::green);
 }
@@ -30,10 +28,10 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QColor col;
     double coff = (scene())->getScale();
 
-    if (this->h.length()>0 && this->h.scalar(this->m)<0){
+    if (this->H().length()>0 && this->H().scalar(this->M())<0){
         col = QColor(240,190,15);
 	} else
-        if (this->state)
+        if (this->getPart()->state)
             col = QColor(255,145,145);
 		else
             col = ellipseBrush.color();
@@ -73,21 +71,30 @@ void PartGraphicsItem::setBrush(const QBrush &b){
     update();
 }
 
+QPointF PartGraphicsItem::Pos()
+{
+    Vect rP = this->realPos();
+    return QPointF(rP.x,rP.y);
+}
+
 void PartGraphicsItem::setPos(const qreal x, const qreal y){
     double coff = (scene())->getScale();
-    this->pos.x = x; this->pos.y = y;
-    QPointF pos2 = QPointF(x*coff,y*coff);
-    QGraphicsItem::setPos(pos2);
+    setRealPos(x/coff,y/coff);
+}
+
+void PartGraphicsItem::setRealPos(const qreal x, const qreal y)
+{
+    this->getPart()->pos.x = x; this->getPart()->pos.y = y;
     update();
 }
 
 void PartGraphicsItem::setM(Vect m){
-    this->m = m;
+    this->getPart()->m = m;
     update();
 }
 
 void PartGraphicsItem::setH(Vect h){
-    this->h = h;
+    this->getPart()->h = h;
     update();
 }
 
@@ -96,12 +103,17 @@ void PartGraphicsItem::setRadius(const double r){
     update();
 }
 
-Vect PartGraphicsItem::M() const{
-    return this->m;
+Vect& PartGraphicsItem::M() const{
+    return this->getPart()->m;
 }
 
-Vect PartGraphicsItem::H() const{
-    return this->h;
+Vect& PartGraphicsItem::H() const{
+    return this->getPart()->h;
+}
+
+Vect &PartGraphicsItem::realPos() const
+{
+    return this->getPart()->pos;
 }
 
 double PartGraphicsItem::Radius() const{
@@ -114,3 +126,13 @@ MyGraphicsScene* PartGraphicsItem::scene() const
 {
     return qobject_cast<MyGraphicsScene*>(QGraphicsItem::scene());
 }
+Part *PartGraphicsItem::getPart() const
+{
+    return part;
+}
+
+void PartGraphicsItem::setPart(Part *value)
+{
+    part = value;
+}
+

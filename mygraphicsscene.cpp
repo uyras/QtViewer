@@ -13,21 +13,6 @@ void MyGraphicsScene::fullReDraw(){
     //добавляем окантовку и оси
     this->_addBorders();
     this->_addRule();
-
-    //рисуем частицы
-    vector<Part*>::iterator
-            begin = PartArray::parts.begin(),
-            end = PartArray::parts.end(),
-            iter = begin;
-    PartGraphicsItem* temp;
-    Part* temp2;
-    while (iter != end){
-        temp2 = *iter;
-        temp = reinterpret_cast<PartGraphicsItem*>(temp2);
-        this->parts.push_back(temp);
-        this->addItem(temp);
-        iter++;
-    }
 }
 
 
@@ -35,14 +20,14 @@ void MyGraphicsScene::reDraw(){
     emit this->update();
 }
 
-void MyGraphicsScene::moveUp(float size=0.1)
+void MyGraphicsScene::moveUp(float size=10.1)
 {
     QList<QGraphicsItem*> items = selectedItems();
     QList<QGraphicsItem*>::Iterator i;
     PartGraphicsItem *temp;
     for(i=items.begin(); i!=items.end(); i++){
         temp = qgraphicsitem_cast<PartGraphicsItem *>(*i);
-        temp->setPos(temp->pos.x+size,temp->pos.y);
+        temp->setPos(temp->Pos().x()+size,temp->Pos().y());
     }
 }
 
@@ -73,9 +58,15 @@ void MyGraphicsScene::setScale(float value)
 
 void MyGraphicsScene::insert(Part *part)
 {
-    PartGraphicsItem *temp = dynamic_cast<PartGraphicsItem*>(part);
-    this->parts.push_back(temp);
     PartArray::insert(part);
+    emit attach(part);
+}
+
+void MyGraphicsScene::attach(Part *part)
+{
+    PartGraphicsItem *temp = new PartGraphicsItem(part);
+    this->parts.push_back(temp);
+    this->addItem(temp);
 }
 
 void MyGraphicsScene::addParts()
@@ -93,6 +84,17 @@ void MyGraphicsScene::resize(double x, double y)
 {
     PartArray::resize(x,y,1);
     this->setSceneRect(0,0,this->size.x*getScale(),this->size.y*getScale());
+}
+
+void MyGraphicsScene::dropRandom(double maxDestiny)
+{
+    PartArray::dropRandom(maxDestiny);
+    //рисуем частицы
+    vector<Part*>::iterator iter = PartArray::parts.begin();
+    while (iter != PartArray::parts.end()){
+        this->attach(*iter);
+        iter++;
+    }
 }
 
 void MyGraphicsScene::_addBorders(){
