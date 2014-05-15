@@ -48,12 +48,12 @@ void MyGraphicsScene::moveRight(float size=0.1)
 
 float MyGraphicsScene::getScale() const
 {
-    return scale;
+    return this->scale;
 }
 
 void MyGraphicsScene::setScale(float value)
 {
-    scale = value;
+    this->scale = value;
 }
 
 void MyGraphicsScene::insert(Part *part)

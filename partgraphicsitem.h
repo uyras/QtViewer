@@ -40,11 +40,13 @@ public:
 
     Part *getPart() const;
     void setPart(Part *value);
+    float getScale() const;
 
 private:
     double radius;
     QBrush ellipseBrush;
     Part* part;
+    float _scale;
 };
 
 #endif // PARTGRAPHICSITEM_H

@@ -1,7 +1,8 @@
 #include "partgraphicsitem.h"
 #include <cmath>
 
-PartGraphicsItem::PartGraphicsItem(Part *p)
+PartGraphicsItem::PartGraphicsItem(Part *p):
+    _scale(0)
 {
     setPart(p);
     this->setFlags(PartGraphicsItem::ItemIsSelectable | PartGraphicsItem::ItemIsMovable);
@@ -9,7 +10,7 @@ PartGraphicsItem::PartGraphicsItem(Part *p)
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
-    double coff = (scene())->getScale();
+    double coff = this->getScale();
     double ml = sqrt(M().x* M().x*coff*coff + M().y* M().y*coff*coff),
             hl = sqrt(H().x* H().x*coff*coff + H().y* H().y*coff*coff);
 	double max = qMax<double>(Radius(), qMax<double>(ml,hl));
@@ -26,7 +27,7 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(widget);
     Q_UNUSED(item);
     QColor col;
-    double coff = (scene())->getScale();
+    double coff = getScale();
 
     if (this->H().length()>0 && this->H().scalar(this->M())<0){
         col = QColor(240,190,15);
@@ -78,7 +79,7 @@ QPointF PartGraphicsItem::Pos()
 }
 
 void PartGraphicsItem::setPos(const qreal x, const qreal y){
-    double coff = (scene())->getScale();
+    double coff = getScale();
     setRealPos(x/coff,y/coff);
 }
 
@@ -117,7 +118,7 @@ Vect &PartGraphicsItem::realPos() const
 }
 
 double PartGraphicsItem::Radius() const{
-    double coff = (scene())->getScale();
+    double coff = getScale();
     return config::Instance()->partR*coff;
     //return this->radius*multiplier;
 }
@@ -126,6 +127,7 @@ MyGraphicsScene* PartGraphicsItem::scene() const
 {
     return qobject_cast<MyGraphicsScene*>(QGraphicsItem::scene());
 }
+
 Part *PartGraphicsItem::getPart() const
 {
     return part;
@@ -134,5 +136,11 @@ Part *PartGraphicsItem::getPart() const
 void PartGraphicsItem::setPart(Part *value)
 {
     part = value;
+    setPos(value->pos.x, value->pos.y);
+}
+
+float PartGraphicsItem::getScale() const
+{
+    return (scene())?scene()->getScale():1;
 }
 
