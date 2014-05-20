@@ -27,6 +27,7 @@ void MyGraphicsView::keyPressEvent(QKeyEvent *event){
         this->setInteractive(false);
         event->accept();
     }
+    QGraphicsView::keyPressEvent(event);
 }
 
 void MyGraphicsView::keyReleaseEvent(QKeyEvent *event){
@@ -35,6 +36,7 @@ void MyGraphicsView::keyReleaseEvent(QKeyEvent *event){
         this->setInteractive(true);
         event->accept();
     }
+    QGraphicsView::keyPressEvent(event);
 }
 
 void MyGraphicsView::wheelEvent(QWheelEvent *event){
@@ -50,4 +52,5 @@ void MyGraphicsView::wheelEvent(QWheelEvent *event){
     } else if (event->modifiers() == Qt::AltModifier){
         this->verticalScrollBar()->setValue(this->verticalScrollBar()->value()-event->delta());
     }
+    QGraphicsView::wheelEvent(event);
 }

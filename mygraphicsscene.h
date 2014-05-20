@@ -6,11 +6,14 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QtWidgets>
 #include <vector>
 #include "PartArray.h"
 #include "partgraphicsitem.h"
+#include "magneticcircle.h"
 
 class PartGraphicsItem;
+class MagneticCircle;
 
 class MyGraphicsScene : public QGraphicsScene, public PartArray
 {
@@ -21,10 +24,8 @@ public:
     QPointF startDot, endDot;
     int E1;
 
-    std::vector<PartGraphicsItem*> parts;
-
-    float getScale() const;
-    void setScale(float value);
+    float getSize() const;
+    void setSize(float value);
     void insert(Part *part);
     void attach(Part *part);
 
@@ -38,21 +39,38 @@ public slots:
     void fullReDraw();
     //обновляет
     void reDraw();
+
+    //действия с выделенной группой частиц
     void moveUp(float size);
     void moveDown(float size);
     void moveLeft(float size);
     void moveRight(float size);
+    void setFiValue(int value);
+    void setMValue(int value);
+    void setRValue(int value);
+
     void clear();
     void resize(double x, double y);
     void dropRandom(double maxDestiny);
+    void dropRandom(int count);
+    void dropChain(double distance);
+    void load(char *file, bool showNotifications=false);
+    void addMagneticCircle(); //нарисовать магнитный круг вокруг выделенных частиц
+    void removeMagneticCircle(); //удалить магнитный круг с рисунка
+    void updateMagneticCirclePos(); //обновить позицию магнитного круга
+    void initSlider();
+    void showSlider();
+    void hideSlider();
 
 
 private:
-    float scale;
-    bool pressed;
+    MagneticCircle* circle;
+    float _size;
     void _addBorders();
     void _addRule();
     void keyPressEvent(QKeyEvent *event);
+    QWidget* _slider;
+    QSlider* _mSlider, *_fiSlider, *_rSlider;
 };
 
 #endif // MYGRAPHICSSCENE_H

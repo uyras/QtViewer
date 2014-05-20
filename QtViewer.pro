@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     generatedialog.cpp \
     mygraphicsview.cpp \
     partgraphicsitem.cpp \
-    mygraphicsscene.cpp
+    mygraphicsscene.cpp \
+    magneticcircle.cpp
 
 HEADERS  += mainwindow.h \
     generatedialog.h \
     mygraphicsview.h \
     partgraphicsitem.h \
-    mygraphicsscene.h
+    mygraphicsscene.h \
+    magneticcircle.h
 
 FORMS    += mainwindow.ui \
     generatedialog.ui
@@ -34,3 +36,6 @@ LIBS += -L$$PWD/../PartsEngine -lPartsEngine
 
 RESOURCES += \
     res.qrc
+
+QMAKE_CXXFLAGS_DEBUG += -pg
+QMAKE_LFLAGS_DEBUG += -pg

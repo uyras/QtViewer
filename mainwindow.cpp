@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->surface, SIGNAL(scaleDown()), this, SLOT(scaleDown()));
 
     this->Parts = ui->surface->scene();
+
+    connect(this->ui->addMagneticRect,SIGNAL(clicked()),Parts,SLOT(initSlider()));
 }
 
 MainWindow::~MainWindow()
@@ -187,9 +189,8 @@ void MainWindow::generate()
 {
     config::Instance()->partR = gd->getR();
     config::Instance()->m = gd->getM();
-    Parts->resize(gd->getW(), gd->getH()); //изменяем размеры системы (параметры чистятся автоматически)
-    Parts->clearSelection();
     Parts->clear();
+    Parts->resize(gd->getW(), gd->getH()); //изменяем размеры системы (параметры чистятся автоматически)
     switch (gd->getMode()){
     case 0: //случайно по плотности
         Parts->dropRandom(gd->getC());
