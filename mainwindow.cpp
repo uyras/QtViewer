@@ -144,8 +144,7 @@ void MainWindow::on_stateNum_valueChanged(unsigned long long int arg1)
 void MainWindow::on_appendState_clicked()
 {
     //this->Parts->transform(this->ui->stateNum->value());
-	this->Parts->calcEnergy1Fast();
-	this->ui->eVal->setText(QString::number(Parts->E1));
+    this->ui->eVal->setText(QString::number(Parts->E()));
 
     emit reDrawParts();
 }
@@ -301,17 +300,14 @@ void MainWindow::saveParticles(){
 	}
 }
 
-void MainWindow::loadParticles(){
+void MainWindow::loadParticles(QString filename){
 	this->ui->stateNum->setValue(0);
 
-	QString filename = QFileDialog::getOpenFileName(this,"Выберите конфигурацию файла");
+    if (filename.isEmpty())
+        filename = QFileDialog::getOpenFileName(this,"Выберите конфигурацию файла");
 
-	if (!filename.isEmpty()) {
-		std::string s = filename.toStdString();
-		char * cfilename = new char [s.length()+1];
-		std::strcpy (cfilename, s.c_str());
-
-		this->Parts->load(cfilename);
+    if (!filename.isEmpty()) {
+        this->Parts->load(filename);
 		initParts();
 
         emit drawParts();
@@ -336,7 +332,7 @@ void MainWindow::setE2State(double e2){
 }
 
 void MainWindow::scaleSystem(){
-	Parts->scaleSystem(ui->resizeDelimiter->value());
+    //Parts->scaleSystem(ui->resizeDelimiter->value());
     emit drawParts();
 }
 

@@ -90,7 +90,7 @@ void MyGraphicsScene::setMValue(int value)
     for(i=items.begin(); i!=items.end(); i++){
         temp = qgraphicsitem_cast<PartGraphicsItem *>(*i);
         Vect vm = temp->M();
-        vm.setUnit(); //делаем вектор единичным
+        vm.setUnitary(); //делаем вектор единичным
         temp->setM(Vect(vm.x*m,vm.y*m,0));
     }
 }
@@ -137,14 +137,14 @@ void MyGraphicsScene::clear()
 
 void MyGraphicsScene::resize(double x, double y)
 {
-    PartArray::resize(x,y,1);
-    this->setSceneRect(0,0,this->size.x*getSize(),this->size.y*getSize());
+    //PartArray::resize(x,y,1);
+    //this->setSceneRect(0,0,this->size.x*getSize(),this->size.y*getSize());
 }
 
 void MyGraphicsScene::dropRandom(double maxDestiny)
 {
     int initCount = parts.size();
-    PartArray::dropRandom(maxDestiny);
+   // PartArray::dropRandom(maxDestiny);
     //рисуем частицы
     vector<Part*>::iterator iter = PartArray::parts.begin()+initCount;
     while (iter != PartArray::parts.end()){
@@ -156,7 +156,7 @@ void MyGraphicsScene::dropRandom(double maxDestiny)
 void MyGraphicsScene::dropRandom(int count)
 {
     int initCount = parts.size();
-    PartArray::dropRandom(count);
+    //PartArray::dropRandom(count);
     //рисуем частицы
     vector<Part*>::iterator iter = PartArray::parts.begin()+initCount;
     while (iter != PartArray::parts.end()){
@@ -168,7 +168,7 @@ void MyGraphicsScene::dropRandom(int count)
 void MyGraphicsScene::dropChain(double distance)
 {
     int initCount = parts.size();
-    PartArray::dropChain(distance);
+    //PartArray::dropChain(distance);
     //рисуем частицы
     vector<Part*>::iterator iter = PartArray::parts.begin()+initCount;
     while (iter != PartArray::parts.end()){
@@ -177,13 +177,12 @@ void MyGraphicsScene::dropChain(double distance)
     }
 }
 
-void MyGraphicsScene::load(char *file, bool showNotifications)
+void MyGraphicsScene::load(QString file, bool showNotifications)
 {
-    int initCount = parts.size();
-    PartArray::load(file,showNotifications);
+    PartArray *sys = SysLoader::load(file);
     //рисуем частицы
-    vector<Part*>::iterator iter = PartArray::parts.begin()+initCount;
-    while (iter != PartArray::parts.end()){
+    vector<Part*>::iterator iter = sys->parts.begin();
+    while (iter != sys->parts.end()){
         emit this->attach(*iter);
         iter++;
     }

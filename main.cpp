@@ -14,6 +14,8 @@ int main(int argc, char *argv[])
 	et->setObjectName("energyTable");
 	et->close();
 
+    if (argc>1)
+        emit w.loadParticles(QString::fromLocal8Bit(argv[1]));
 
 	w.show();
     return a.exec();

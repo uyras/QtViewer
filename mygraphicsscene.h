@@ -54,7 +54,7 @@ public slots:
     void dropRandom(double maxDestiny);
     void dropRandom(int count);
     void dropChain(double distance);
-    void load(char *file, bool showNotifications=false);
+    void load(QString file, bool showNotifications=false);
     void addMagneticCircle(); //нарисовать магнитный круг вокруг выделенных частиц
     void removeMagneticCircle(); //удалить магнитный круг с рисунка
     void updateMagneticCirclePos(); //обновить позицию магнитного круга

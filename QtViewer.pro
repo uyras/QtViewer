@@ -30,12 +30,9 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     generatedialog.ui
 
-INCLUDEPATH += "../PartsEngine/"
+INCLUDEPATH += "../partsEngine/"
 
-LIBS += -L$$PWD/../PartsEngine -lPartsEngine
+LIBS += -L$$PWD/../partsEngine -lPartsEngine
 
 RESOURCES += \
     res.qrc
-
-QMAKE_CXXFLAGS_DEBUG += -pg
-QMAKE_LFLAGS_DEBUG += -pg

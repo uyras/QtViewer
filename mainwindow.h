@@ -6,6 +6,9 @@
 #include "generatedialog.h"
 #include "PartArray.h"
 #include "Part.h"
+#include "honeycombspinicearray.h"
+#include "squarespinicearray.h"
+#include "squarelattice.h"
 #include <vector>
 #include "mygraphicsview.h"
 
@@ -49,7 +52,7 @@ public slots:
 
     void saveParticles();
 
-    void loadParticles();
+    void loadParticles(QString filename="");
 
     void clearParticles();
 
