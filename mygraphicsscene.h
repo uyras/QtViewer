@@ -15,19 +15,23 @@
 class PartGraphicsItem;
 class MagneticCircle;
 
-class MyGraphicsScene : public QGraphicsScene, public PartArray
+class MyGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
     explicit MyGraphicsScene(QObject *parent = 0);
+    virtual ~MyGraphicsScene();
 
     QPointF startDot, endDot;
     int E1;
 
     float getSize() const;
     void setSize(float value);
-    void insert(Part *part);
     void attach(Part *part);
+    bool doubleArrows, autoScale, ruler;
+    void setSpaceCoff(double coff); //установить пространственный коэфф. для системы
+    void setMCoff(double coff); //установитькоэфф. магнитного момента
+    PartArray* sys;
 
 signals:
     void setM(double);
@@ -35,42 +39,21 @@ signals:
     void setE2(double);
 
 public slots:
-    void addParts();
-    void fullReDraw();
-    //обновляет
-    void reDraw();
-
-    //действия с выделенной группой частиц
-    void moveUp(float size);
-    void moveDown(float size);
-    void moveLeft(float size);
-    void moveRight(float size);
-    void setFiValue(int value);
-    void setMValue(int value);
-    void setRValue(int value);
 
     void clear();
-    void resize(double x, double y);
-    void dropRandom(double maxDestiny);
-    void dropRandom(int count);
-    void dropChain(double distance);
-    void load(QString file, bool showNotifications=false);
+    void load(QString file);
+    void save(QString file);
     void addMagneticCircle(); //нарисовать магнитный круг вокруг выделенных частиц
     void removeMagneticCircle(); //удалить магнитный круг с рисунка
     void updateMagneticCirclePos(); //обновить позицию магнитного круга
-    void initSlider();
-    void showSlider();
-    void hideSlider();
 
 
 private:
+    PartArray * backupSys;
     MagneticCircle* circle;
     float _size;
-    void _addBorders();
-    void _addRule();
+    double spaceCoff, mCoff;
     void keyPressEvent(QKeyEvent *event);
-    QWidget* _slider;
-    QSlider* _mSlider, *_fiSlider, *_rSlider;
 };
 
 #endif // MYGRAPHICSSCENE_H

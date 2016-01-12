@@ -5,52 +5,35 @@
 #include <QPainter>
 #include <QDebug>
 
-#include <Part.h>
-#include <config.h>
-#include <Vect.h>
-#include <mygraphicsscene.h>
+#include "Part.h"
+#include "Vect.h"
 
 class MyGraphicsScene;
 
 class PartGraphicsItem : public QGraphicsItem
 {
 public:
-    PartGraphicsItem(Part* p, float size);
+    PartGraphicsItem(Part* p);
 
     enum { Type = UserType + 1 };
 
-    QRectF boundingRect() const;
-    QPainterPath shape() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    QPainterPath shape() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) Q_DECL_OVERRIDE;
     int type() const;
+    void mCoff(double coff);
+    void spaceCoff(double coff);
 
-    void setRealPos(const qreal x, const qreal y);
-    void setM(Vect m);
-    void setH(Vect h);
-    void setRadius(const double r);
-    void setBrush(const QBrush &b);
-    void setSize(float size);
+    Part* P();
 
-    Vect &M() const;
-    Vect &H() const;
-    QPointF m() const;
-    Vect &realPos() const;
-    double Radius() const;
-    MyGraphicsScene* scene() const;
+    MyGraphicsScene* myScene() const;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) Q_DECL_OVERRIDE;
 
-    Part *getPart() const;
-    void setPart(Part *value);
-    float getSize() const;
+public slots:
+    void updatePos();
 
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-private slots:
-    void setBoundingRect();
 private:
-    double radius;
-    QBrush ellipseBrush;
     Part* part;
-    float _size;
     QRectF boundingRectChache;
 };
 

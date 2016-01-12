@@ -14,21 +14,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    generatedialog.cpp \
     mygraphicsview.cpp \
     partgraphicsitem.cpp \
     mygraphicsscene.cpp \
     magneticcircle.cpp
 
 HEADERS  += mainwindow.h \
-    generatedialog.h \
     mygraphicsview.h \
     partgraphicsitem.h \
     mygraphicsscene.h \
     magneticcircle.h
 
-FORMS    += mainwindow.ui \
-    generatedialog.ui
+FORMS    += mainwindow.ui
 
 INCLUDEPATH += "../partsEngine/"
 

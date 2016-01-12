@@ -6,19 +6,86 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>932</width>
-    <height>606</height>
+    <width>511</width>
+    <height>345</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Магнитный симулятор</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="2">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>3</number>
+    </property>
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <item>
+     <widget class="QSlider" name="scaler">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>300</number>
+      </property>
+      <property name="pageStep">
+       <number>10</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBelow</enum>
+      </property>
+      <property name="tickInterval">
+       <number>10</number>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="MyGraphicsView" name="surface">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="backgroundBrush">
+       <brush brushstyle="NoBrush">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </property>
+      <property name="foregroundBrush">
+       <brush brushstyle="NoBrush">
+        <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </property>
       <property name="interactive">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="sceneRect">
        <rectf>
@@ -35,296 +102,110 @@
        <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform</set>
       </property>
       <property name="dragMode">
-       <enum>QGraphicsView::RubberBandDrag</enum>
+       <enum>QGraphicsView::ScrollHandDrag</enum>
       </property>
       <property name="transformationAnchor">
        <enum>QGraphicsView::NoAnchor</enum>
       </property>
       <property name="resizeAnchor">
-       <enum>QGraphicsView::AnchorViewCenter</enum>
+       <enum>QGraphicsView::AnchorUnderMouse</enum>
       </property>
       <property name="viewportUpdateMode">
-       <enum>QGraphicsView::FullViewportUpdate</enum>
+       <enum>QGraphicsView::MinimalViewportUpdate</enum>
       </property>
       <property name="optimizationFlags">
        <set>QGraphicsView::IndirectPainting</set>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QWidget" name="widget_2" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <layout class="QFormLayout" name="formLayout">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>3</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="saveBtn">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QToolButton" name="refreshBtn">
          <property name="text">
-          <string>Сохранить</string>
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset theme="view-refresh">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="openBtn">
+       <item>
+        <widget class="QPushButton" name="dbgButton">
          <property name="text">
-          <string>Открыть</string>
+          <string>dbg</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="genBtn">
-         <property name="text">
-          <string>Генерировать</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="text">
-          <string>Очистить</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>state:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QSpinBox" name="stateNum"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Масштаб:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="appendState">
-         <property name="text">
-          <string>Применить</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Таблица энергий</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QPushButton" name="pushButton_4">
-         <property name="text">
-          <string>Таблица вырождений</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QPushButton" name="resizeSystem">
-         <property name="text">
-          <string>Масштабировать систему:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_2">
+       <item>
+        <widget class="QLabel" name="infoLbl">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="text">
-          <string>E</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QLabel" name="eVal">
-         <property name="text">
           <string/>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QSlider" name="scaler">
-         <property name="minimum">
-          <number>1</number>
+       <item>
+        <widget class="QLabel" name="modeLbl">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="maximum">
-          <number>300</number>
-         </property>
-         <property name="pageStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>50</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="tickPosition">
-          <enum>QSlider::TicksBelow</enum>
-         </property>
-         <property name="tickInterval">
-          <number>10</number>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>M</string>
+          <string>Режим:</string>
          </property>
         </widget>
        </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>M / |M|</string>
+       <item>
+        <widget class="QComboBox" name="modeBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>J</string>
+         <property name="currentText">
+          <string>Просмотр</string>
          </property>
-        </widget>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>J / |J|</string>
-         </property>
-        </widget>
-       </item>
-       <item row="15" column="0">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string># частиц</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>С</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QDoubleSpinBox" name="resizeDelimiter">
-         <property name="maximum">
-          <double>5.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.010000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QLabel" name="m1Val">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QLabel" name="m2Val">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1">
-        <widget class="QLabel" name="j1Val">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1">
-        <widget class="QLabel" name="j2Val">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="15" column="1">
-        <widget class="QLabel" name="countVal">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="1">
-        <widget class="QLabel" name="cVal">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>H</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="0">
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>H / |H|</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1">
-        <widget class="QLabel" name="h1Val">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="14" column="1">
-        <widget class="QLabel" name="h2Val">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Все вверх</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QPushButton" name="showH">
-         <property name="text">
-          <string>Показать H</string>
-         </property>
-        </widget>
-       </item>
-       <item row="17" column="1">
-        <widget class="QPushButton" name="addMagneticRect">
-         <property name="text">
-          <string>Добавить окантовку</string>
-         </property>
+         <item>
+          <property name="text">
+           <string>Просмотр</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Поворот</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Поля (h)</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
@@ -337,15 +218,204 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>932</width>
-     <height>21</height>
+     <width>511</width>
+     <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="fileMenu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="openBtn"/>
+    <addaction name="saveBtn"/>
+    <addaction name="saveAsBtn"/>
+    <addaction name="export_jpg"/>
+    <addaction name="export_pdf"/>
+    <addaction name="exitBtn"/>
+   </widget>
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
+     <string>Вид</string>
+    </property>
+    <addaction name="particleProperties"/>
+    <addaction name="systemProperties"/>
+    <addaction name="doubleArrows"/>
+    <addaction name="autoScale"/>
+    <addaction name="ruler"/>
+    <addaction name="refreshMenuItem"/>
+   </widget>
+   <widget class="QMenu" name="infoMenu">
+    <property name="title">
+     <string>Инфо</string>
+    </property>
+    <addaction name="aboutBtn"/>
+   </widget>
+   <addaction name="fileMenu"/>
+   <addaction name="viewMenu"/>
+   <addaction name="infoMenu"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNew">
+  <action name="openBtn">
+   <property name="icon">
+    <iconset theme="document-open">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
    <property name="text">
-    <string>new</string>
+    <string>Открыть</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть файл магнитной системы</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
+  <action name="saveBtn">
+   <property name="icon">
+    <iconset theme="document-save">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить</string>
+   </property>
+   <property name="toolTip">
+    <string>Сохранить систему в файл</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="saveAsBtn">
+   <property name="icon">
+    <iconset theme="document-save-as">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить как</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="export_jpg">
+   <property name="text">
+    <string>Экспорт jpg</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+J</string>
+   </property>
+  </action>
+  <action name="export_pdf">
+   <property name="text">
+    <string>Экспорт pdf</string>
+   </property>
+   <property name="toolTip">
+    <string>Экспортировать в векторный формат pdf</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+P</string>
+   </property>
+  </action>
+  <action name="particleProperties">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Свойства частицы</string>
+   </property>
+   <property name="toolTip">
+    <string>Показать диалог с характеристиками выбранной частицы</string>
+   </property>
+  </action>
+  <action name="systemProperties">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Свойства системы</string>
+   </property>
+   <property name="toolTip">
+    <string>Показать диалог с параметрами системы</string>
+   </property>
+  </action>
+  <action name="doubleArrows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Стрелки двойной длины</string>
+   </property>
+   <property name="toolTip">
+    <string>Если включено, стрелки проходят точку частицы в середине своей длины, иначе стрелки выходят из точки.</string>
+   </property>
+  </action>
+  <action name="autoScale">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Авто масштаб</string>
+   </property>
+   <property name="toolTip">
+    <string>Если включено, стрелки будут автоматически увеличены до нужного размера</string>
+   </property>
+  </action>
+  <action name="ruler">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Линейка</string>
+   </property>
+   <property name="toolTip">
+    <string>Показать линейку по периметру отображения</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="aboutBtn">
+   <property name="icon">
+    <iconset theme="dialog-information">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>О программе</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="exitBtn">
+   <property name="icon">
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Выход</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+X</string>
+   </property>
+  </action>
+  <action name="refreshMenuItem">
+   <property name="icon">
+    <iconset theme="view-refresh">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Обовить</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>
@@ -355,51 +425,24 @@
    <class>MyGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>mygraphicsview.h</header>
+   <slots>
+    <slot>changeOperateMode(int)</slot>
+    <slot>dbgSlot()</slot>
+    <slot>toggleDoubleArrows(bool)</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
  <connections>
   <connection>
-   <sender>appendState</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>repaint()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>234</x>
-     <y>175</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>297</x>
-     <y>177</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>stateNum</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>stateNum</receiver>
-   <slot>repaint()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>234</x>
-     <y>118</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>234</x>
-     <y>118</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>saveBtn</sender>
-   <signal>clicked()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>saveParticles()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>43</x>
-     <y>47</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>112</x>
@@ -409,13 +452,13 @@
   </connection>
   <connection>
    <sender>openBtn</sender>
-   <signal>clicked()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>loadParticles()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>47</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -424,18 +467,82 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>refreshBtn</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>clearParticles()</slot>
+   <receiver>surface</receiver>
+   <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>145</x>
-     <y>82</y>
+     <x>16</x>
+     <y>328</y>
     </hint>
     <hint type="destinationlabel">
-     <x>291</x>
-     <y>28</y>
+     <x>255</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modeBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>surface</receiver>
+   <slot>changeOperateMode(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>460</x>
+     <y>328</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>surface</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dbgButton</sender>
+   <signal>clicked()</signal>
+   <receiver>surface</receiver>
+   <slot>dbgSlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>71</x>
+     <y>328</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleArrows</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>surface</receiver>
+   <slot>toggleDoubleArrows(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>180</y>
     </hint>
    </hints>
   </connection>

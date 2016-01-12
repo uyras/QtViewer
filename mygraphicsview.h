@@ -4,11 +4,13 @@
 #include <QGraphicsView>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QDebug>
 
 #include "mygraphicsscene.h"
 #include "PartArray.h"
 #include "partgraphicsitem.h"
 #include "Part.h"
+#include "random.h"
 
 class MyGraphicsView : public QGraphicsView
 {
@@ -21,15 +23,21 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void resizeEvent(QResizeEvent *event); //изменение положения превью при изменении размеров основного окна
 
+private:
+    QGraphicsView preview;
     
 signals:
     void scaleUp();
     void scaleDown();
     
 public slots:
-
+    void updatePreview(const QList<QRectF> & regions);
     void scaleTo(int size);
+    void changeOperateMode(int mode);
+    void dbgSlot();
+    void toggleDoubleArrows(bool on);
     
 };
 

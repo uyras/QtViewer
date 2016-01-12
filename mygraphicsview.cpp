@@ -1,11 +1,28 @@
 #include "mygraphicsview.h"
 
 MyGraphicsView::MyGraphicsView(QObject *parent) :
-    QGraphicsView()
+    QGraphicsView(),
+    preview(this)
 {
     Q_UNUSED(parent);
     _scene = new MyGraphicsScene(this);
     this->setScene(_scene);
+    emit changeOperateMode(0);
+    preview.setScene(_scene);
+
+    preview.setFixedSize(150,150);
+    preview.setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    preview.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    preview.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    preview.setInteractive(false);
+    connect(_scene,SIGNAL(changed(QList<QRectF>)),this,SLOT(updatePreview(QList<QRectF>)));
+
+
+    /*
+    Part* p = new Part();
+    p->m = Vect(10,10,0);
+    _scene->attach(p);
+    */
 }
 
 
@@ -21,19 +38,43 @@ void MyGraphicsView::scaleTo(int size){
     setMatrix(matrix);
 }
 
-void MyGraphicsView::keyPressEvent(QKeyEvent *event){
-    if (event->modifiers() & (Qt::ShiftModifier | Qt::AltModifier)){
+void MyGraphicsView::changeOperateMode(int mode)
+{
+    switch(mode){
+    case 0: default:
         this->setDragMode(QGraphicsView::ScrollHandDrag);
         this->setInteractive(false);
+        break;
+    case 1:
+        this->setDragMode(QGraphicsView::RubberBandDrag);
+        this->setInteractive(true);
+        break;
+    }
+
+}
+
+void MyGraphicsView::dbgSlot()
+{
+    scene()->sys->save("1.dat");
+    scene()->update();
+}
+
+void MyGraphicsView::toggleDoubleArrows(bool on)
+{
+    scene()->doubleArrows = on;
+}
+
+void MyGraphicsView::keyPressEvent(QKeyEvent *event){
+    qDebug()<<this->geometry().width();
+    if (event->modifiers() & (Qt::ShiftModifier | Qt::AltModifier)){
         event->accept();
     }
     QGraphicsView::keyPressEvent(event);
 }
 
 void MyGraphicsView::keyReleaseEvent(QKeyEvent *event){
+    //switch()
     if ( !(event->modifiers()&(Qt::ShiftModifier | Qt::AltModifier))){
-        this->setDragMode(QGraphicsView::RubberBandDrag);
-        this->setInteractive(true);
         event->accept();
     }
     QGraphicsView::keyPressEvent(event);
@@ -54,3 +95,19 @@ void MyGraphicsView::wheelEvent(QWheelEvent *event){
     }
     QGraphicsView::wheelEvent(event);
 }
+
+void MyGraphicsView::resizeEvent(QResizeEvent *event)
+{
+    preview.move(event->size().width()-preview.width(),0);
+}
+
+void MyGraphicsView::updatePreview(const QList<QRectF> &regions)
+{
+    qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
+    qDebug()<<regions;
+}
+
+/*void MyGraphicsView::drawForeground(QPainter *paint, const QRectF &rect)
+{
+    paint->drawLine(0,0,20,20);
+}*/

@@ -1,172 +1,102 @@
 #include "partgraphicsitem.h"
+#include"mygraphicsscene.h"
 #include <cmath>
 
-PartGraphicsItem::PartGraphicsItem(Part *p, float size):
-    part(NULL)
+PartGraphicsItem::PartGraphicsItem(Part *p):
+    part(p)
 {
-    setAcceptDrops(true);
-    setSize(size);
-    setPart(p);
-    this->setFlags(PartGraphicsItem::ItemIsSelectable | PartGraphicsItem::ItemIsMovable | ItemSendsGeometryChanges);
-    ellipseBrush.setColor(Qt::green);
+    setFlag(ItemIsSelectable);
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
-    return boundingRectChache;
-}
-
-void PartGraphicsItem::setBoundingRect(){
-    if (this->getPart()){
-        double coff = this->getSize();
-        double r = Radius();
-        double mx = std::max<double>(std::fabs(M().x),std::fabs(H().x))*coff;
-        mx = (r>mx)?r:mx;
-        double my = std::max<double>(std::fabs(M().y),std::fabs(H().y))*coff;
-        my = (r>my)?r:my;
-        boundingRectChache = QRectF(-1*mx, -1*my, 2*mx, 2*my);
-    }
+    double mlen = part->m.length();
+    return QRectF(-1. * mlen, -1. * mlen, 2. * mlen, 2. * mlen);
 }
 
 QPainterPath PartGraphicsItem::shape() const{
     QPainterPath path;
-    double r = Radius();
-    path.addEllipse(r*-1,r*-1,r*2,r*2);
+    double r = part->m.length();
+    path.addEllipse(r*-1, r*-1, r*2+1, r*2+1);
     return path;
 }
 
 void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget){
     Q_UNUSED(widget);
     Q_UNUSED(item);
-    QColor col = ellipseBrush.color();
-    double coff = getSize();
 
-    if (this->isSelected())
-        col = col.darker(50);
+    /*#ifdef QT_DEBUG //рисовать окантовки
+    painter->setBrush(Qt::NoBrush);
+    painter->drawRect(boundingRect());
+    painter->drawPath(shape());
+    #endif*/
 
-    painter->setBrush(QBrush(col));
+    painter->rotate(part->m.grade());
+    double mlen = part->m.length();
 
-    double r = Radius();
-    painter->drawEllipse(r*-1,r*-1,r*2,r*2);
+    //маленький красный крестик в центре частицы
+    painter->setPen(Qt::red);
+    painter->drawLine(-0.1 * mlen, 0.1 * mlen, 0.1 * mlen, -0.1* mlen);
+    painter->drawLine(0.1 * mlen, 0.1 * mlen, -0.1 * mlen, -0.1 * mlen);
 
-    QPen oldPen = painter->pen();
-
+    painter->setPen(Qt::black);
     //магнитный момент
-    if (M().x!=0 || M().y!=0){
-        painter->setPen(Qt::red);
-        painter->drawLine(0,0,M().x*coff,M().y*coff);
+    if (part->m.x!=0 || part->m.y!=0){
+        if (myScene()->doubleArrows)
+            painter->drawLine(-1. * mlen, 0, mlen*0.7,0);
+        else
+            painter->drawLine(0, 0, mlen*0.7, 0);
     }
 
-    //поле взаимодействия
-    if (H().x!=0 || H().y!=0){
-        painter->setPen(Qt::blue);
-        painter->drawLine(0,0,H().x*coff,H().y*coff);
-    }
+    //наконечник стрелки магнитного момента
+    if (part->state)
+        painter->setBrush(QBrush(Qt::red));
+    else
+        painter->setBrush(QBrush(Qt::black));
 
-    painter->setPen(oldPen);
-    if (false){
-        painter->setBrush(Qt::NoBrush);
-        painter->drawRect(boundingRect());
-    }
+    const QPointF points[3] = {
+        QPointF(mlen * 0.7, -0.2 * mlen),
+        QPointF(mlen * 0.7, 0.2 * mlen),
+        QPointF(mlen, 0)
+    };
+    painter->drawPolygon(points,3);
+
 }
 
 int PartGraphicsItem::type() const
 {
-      return Type;
+    return Type;
 }
 
-
-void PartGraphicsItem::setBrush(const QBrush &b){
-    this->ellipseBrush = b;
-    update();
-}
-
-void PartGraphicsItem::setSize(float size)
+void PartGraphicsItem::mCoff(double coff)
 {
-    this->_size = size;
-    emit setBoundingRect();
-    if (this->getPart())
-        setPos(this->getPart()->pos.x*size, this->getPart()->pos.y*size);
+    part->m*=coff;
 }
 
-void PartGraphicsItem::setRealPos(const qreal x, const qreal y)
+void PartGraphicsItem::spaceCoff(double coff)
 {
-    setPos(x*getSize(),y*getSize());
+    part->pos *= coff;
+    updatePos();
 }
 
-void PartGraphicsItem::setM(Vect m){
-    this->getPart()->m = m;
-    update();
-    emit setBoundingRect();
-}
-
-void PartGraphicsItem::setH(Vect h){
-    this->getPart()->h = h;
-    emit setBoundingRect();
-    update();
-}
-
-void PartGraphicsItem::setRadius(const double r){
-    this->radius = r;
-    emit setBoundingRect();
-    update();
-}
-
-Vect& PartGraphicsItem::M() const{
-    return this->getPart()->m;
-}
-
-Vect& PartGraphicsItem::H() const{
-    return this->getPart()->h;
-}
-
-QPointF PartGraphicsItem::m() const
-{
-    return QPointF(this->getPart()->m.x, this->getPart()->m.y);
-}
-
-Vect &PartGraphicsItem::realPos() const
-{
-    return this->getPart()->pos;
-}
-
-double PartGraphicsItem::Radius() const{
-    return config::Instance()->partR*getSize();
-    //return this->radius*multiplier;
-}
-
-MyGraphicsScene* PartGraphicsItem::scene() const
-{
-    return qobject_cast<MyGraphicsScene*>(QGraphicsItem::scene());
-}
-
-Part *PartGraphicsItem::getPart() const
+Part* PartGraphicsItem::PartGraphicsItem::P()
 {
     return part;
 }
 
-void PartGraphicsItem::setPart(Part *value)
+MyGraphicsScene* PartGraphicsItem::myScene() const
 {
-    part = value;
-    emit setBoundingRect();
-    setPos(value->pos.x*getSize(), value->pos.y*getSize());
+    return qobject_cast<MyGraphicsScene*>(scene());
 }
 
-float PartGraphicsItem::getSize() const
+void PartGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    return _size;
+    qDebug()<<"clicked on part";
+    this->part->rotate();
+    this->update();
 }
 
-QVariant PartGraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+void PartGraphicsItem::updatePos()
 {
-    if (change == ItemPositionHasChanged){
-        QPointF newPos = value.toPointF();
-        Part* p = getPart();
-        p->pos.x = newPos.x()/getSize();
-        p->pos.y = newPos.y()/getSize();
-    }
-    if (change == ItemSelectedHasChanged){
-        this->setZValue(value.toInt());
-    }
-    return QGraphicsItem::itemChange(change, value);
+    this->setPos(part->pos.x, part->pos.y);
 }
 

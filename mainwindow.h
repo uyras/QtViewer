@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QLabel>
-#include "generatedialog.h"
 #include "PartArray.h"
 #include "Part.h"
 #include "honeycombspinicearray.h"
@@ -28,27 +27,7 @@ public:
 
 public slots:
 
-    //генерим частицы
-    void generate();
-
-	//пересчитать и отобразить поля взаимодействия
-	void calcH();
-
-    void initParts();
-
-    void on_surface_destroyed();
-
     void paintEvent( QPaintEvent *event );
-
-    void on_stateNum_valueChanged(unsigned long long int arg1);
-
-    void on_appendState_clicked();
-
-	void on_pushButton_2_clicked();
-
-	void on_genBtn_clicked();
-
-    void on_pushButton_4_clicked();
 
     void saveParticles();
 
@@ -60,24 +39,13 @@ public slots:
     void setE1State(double e1);
     void setE2State(double e2);
 
-    void recalcParameters(); //пересчитать параметры системы
-
     void scaleSystem(); //масштабировать систему (не меняя диаметра частиц)
 
     void scaleUp(); //Увеличивает масштаб области отображения
     void scaleDown(); //уменьшает масштаб области отображения
 
-signals:
-    void drawParts(); //нарисовать частицы
-    void reDrawParts(); //перерисовать частицы
-
-private slots:
-	void on_pushButton_clicked();
-
 private:
     Ui::MainWindow *ui;
-
-    generateDialog* gd;
     void emptyENFolder();
 
     //statusBarLabels
