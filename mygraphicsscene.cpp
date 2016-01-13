@@ -2,17 +2,16 @@
 
 MyGraphicsScene::MyGraphicsScene(QObject *parent) :
     QGraphicsScene(parent),
+    doubleArrows(true),
     circle(NULL),
-    spaceCoff(0),
-    mCoff(0),
+    spaceCoff(1),
+    mCoff(1),
     backupSys(0)
 {
     Q_UNUSED(parent);
     setItemIndexMethod(NoIndex);
     sys = new PartArray();
-
-    setMCoff(10);
-    setSpaceCoff(3);
+    backupSys = new PartArray();
 }
 
 MyGraphicsScene::~MyGraphicsScene()
@@ -74,7 +73,7 @@ void MyGraphicsScene::clear()
 
 void MyGraphicsScene::load(QString file)
 {
-    backupSys = SysLoader::load(file);
+    backupSys->load(file);
     *sys = *backupSys;
     sys->state = backupSys->state;
     //рисуем частицы
@@ -83,7 +82,9 @@ void MyGraphicsScene::load(QString file)
         emit this->attach(*iter);
         iter++;
     }
+    setAutoCoffs();
     emit update();
+    emit systemChanged();
 }
 
 void MyGraphicsScene::save(QString file)
@@ -141,6 +142,31 @@ void MyGraphicsScene::updateMagneticCirclePos()
         circle->setM(QPointF(m.x, m.y));
         circle->setPos((minx+maxx)/2.,(miny+maxy)/2.);
     }
+}
+
+void MyGraphicsScene::setAutoCoffs()
+{
+    const double normalM = 25.,
+            normalSpace=50.;
+    double averM=0., minSpace=sys->parts[0]->pos.space(sys->parts[1]->pos);
+    Part *temp1, *temp2;
+    vector<Part*>::iterator iter1 = sys->parts.begin(), iter2;
+    int i=0;
+    while (iter1!=sys->parts.end()){
+        temp1 = *iter1;
+        averM = (averM*(double)i+temp1->m.length())/(double)(i+1);
+        iter2=iter1;
+        iter2++;
+        while (iter2!=sys->parts.end()){
+            temp2 = *iter2;
+            temp1->pos.space(temp2->pos);
+            iter2++;
+        }
+        iter1++; i++;
+    }
+    setSpaceCoff(normalSpace/minSpace);
+    setMCoff(normalM/averM);
+    update();
 }
 
 void MyGraphicsScene::keyPressEvent(QKeyEvent *event){

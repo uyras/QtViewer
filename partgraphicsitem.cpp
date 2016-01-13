@@ -92,6 +92,7 @@ void PartGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug()<<"clicked on part";
     this->part->rotate();
+    emit myScene()->systemChanged();
     this->update();
 }
 

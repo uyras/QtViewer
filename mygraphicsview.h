@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QDebug>
+#include <QGraphicsOpacityEffect>
 
 #include "mygraphicsscene.h"
 #include "PartArray.h"

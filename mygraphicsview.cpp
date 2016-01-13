@@ -10,11 +10,16 @@ MyGraphicsView::MyGraphicsView(QObject *parent) :
     emit changeOperateMode(0);
     preview.setScene(_scene);
 
-    preview.setFixedSize(150,150);
+    preview.setFixedSize(120,120);
+    QGraphicsOpacityEffect *e = new QGraphicsOpacityEffect();
+    e->setOpacity(0.3);
+    preview.setGraphicsEffect(e);
+    preview.setAutoFillBackground(true);
     preview.setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     preview.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     preview.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     preview.setInteractive(false);
+    preview.hide();
     connect(_scene,SIGNAL(changed(QList<QRectF>)),this,SLOT(updatePreview(QList<QRectF>)));
 
 
@@ -62,6 +67,7 @@ void MyGraphicsView::dbgSlot()
 void MyGraphicsView::toggleDoubleArrows(bool on)
 {
     scene()->doubleArrows = on;
+    emit scene()->update();
 }
 
 void MyGraphicsView::keyPressEvent(QKeyEvent *event){
@@ -93,6 +99,7 @@ void MyGraphicsView::wheelEvent(QWheelEvent *event){
     } else if (event->modifiers() == Qt::AltModifier){
         this->verticalScrollBar()->setValue(this->verticalScrollBar()->value()-event->delta());
     }
+
     QGraphicsView::wheelEvent(event);
 }
 
@@ -103,6 +110,7 @@ void MyGraphicsView::resizeEvent(QResizeEvent *event)
 
 void MyGraphicsView::updatePreview(const QList<QRectF> &regions)
 {
+    preview.setSceneRect(scene()->sceneRect());
     qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
     qDebug()<<regions;
 }

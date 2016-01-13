@@ -44,6 +44,8 @@ public slots:
     void scaleUp(); //Увеличивает масштаб области отображения
     void scaleDown(); //уменьшает масштаб области отображения
 
+    void recalcSystemValues();
+
 private:
     Ui::MainWindow *ui;
     void emptyENFolder();

@@ -34,9 +34,7 @@ public:
     PartArray* sys;
 
 signals:
-    void setM(double);
-    void setE1(double);
-    void setE2(double);
+    void systemChanged();
 
 public slots:
 
@@ -46,6 +44,7 @@ public slots:
     void addMagneticCircle(); //нарисовать магнитный круг вокруг выделенных частиц
     void removeMagneticCircle(); //удалить магнитный круг с рисунка
     void updateMagneticCirclePos(); //обновить позицию магнитного круга
+    void setAutoCoffs(); //вычислить средние коэффициенты и установить
 
 
 private:

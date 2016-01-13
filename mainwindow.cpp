@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->Parts = ui->surface->scene();
 
+    //изменение состояния магнитной системы
+    connect(this->Parts, SIGNAL(systemChanged()),this, SLOT(recalcSystemValues()));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -104,4 +108,10 @@ void MainWindow::scaleUp(){
 
 void MainWindow::scaleDown(){
     ui->scaler->setValue(ui->scaler->value() - ui->scaler->pageStep());
+}
+
+void MainWindow::recalcSystemValues()
+{
+    ui->infoLbl->setText(QString("E=%1").arg(Parts->sys->E()));
+    qDebug()<<Parts->sys->E();
 }
