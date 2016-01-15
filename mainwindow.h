@@ -3,13 +3,10 @@
 
 #include <QMainWindow>
 #include <QLabel>
-#include "PartArray.h"
-#include "Part.h"
-#include "honeycombspinicearray.h"
-#include "squarespinicearray.h"
-#include "squarelattice.h"
 #include <vector>
+#include "PartArray.h"
 #include "mygraphicsview.h"
+#include "systemproperties.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +19,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    MyGraphicsScene* Parts;
-
 
 public slots:
 
@@ -48,13 +43,9 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    SystemProperties sysprop;
+    PartArray sys;
     void emptyENFolder();
-
-    //statusBarLabels
-    QLabel
-        *mState,
-        *e1State,
-        *e2State;
 };
 
 #endif // MAINWINDOW_H

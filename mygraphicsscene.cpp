@@ -12,6 +12,7 @@ MyGraphicsScene::MyGraphicsScene(QObject *parent) :
     setItemIndexMethod(NoIndex);
     sys = new PartArray();
     backupSys = new PartArray();
+    connect(this,SIGNAL(changed(QList<QRectF>)),this,SIGNAL(systemChanged()));
 }
 
 MyGraphicsScene::~MyGraphicsScene()
@@ -90,6 +91,8 @@ void MyGraphicsScene::load(QString file)
 void MyGraphicsScene::save(QString file)
 {
     backupSys->state = sys->state;
+    backupSys->setMaxstate(sys->Maxstate());
+    backupSys->setMinstate(sys->Minstate());
     backupSys->save(file);
 }
 

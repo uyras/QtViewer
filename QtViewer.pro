@@ -17,15 +17,18 @@ SOURCES += main.cpp\
     mygraphicsview.cpp \
     partgraphicsitem.cpp \
     mygraphicsscene.cpp \
-    magneticcircle.cpp
+    magneticcircle.cpp \
+    systemproperties.cpp
 
 HEADERS  += mainwindow.h \
     mygraphicsview.h \
     partgraphicsitem.h \
     mygraphicsscene.h \
-    magneticcircle.h
+    magneticcircle.h \
+    systemproperties.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    systemproperties.ui
 
 INCLUDEPATH += "../partsEngine/"
 

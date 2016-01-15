@@ -21,8 +21,9 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    sysprop()
 {
     ui->setupUi(this);
 
@@ -38,7 +39,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //изменение состояния магнитной системы
     connect(this->Parts, SIGNAL(systemChanged()),this, SLOT(recalcSystemValues()));
 
-
+    //окно свойств системы
+    sysprop.sys = Parts->sys;
+    connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
+    connect(Parts, SIGNAL(systemChanged()), &sysprop, SLOT(updateData()));
+    connect(&sysprop,SIGNAL(sysUpdated()), Parts, SLOT(update(QRectF)));
 }
 
 MainWindow::~MainWindow()

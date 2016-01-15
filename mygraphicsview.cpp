@@ -110,9 +110,10 @@ void MyGraphicsView::resizeEvent(QResizeEvent *event)
 
 void MyGraphicsView::updatePreview(const QList<QRectF> &regions)
 {
-    preview.setSceneRect(scene()->sceneRect());
-    qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
-    qDebug()<<regions;
+    if (regions.size()>0)
+        preview.setSceneRect(scene()->sceneRect());
+    /*qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
+    qDebug()<<regions;*/
 }
 
 /*void MyGraphicsView::drawForeground(QPainter *paint, const QRectF &rect)

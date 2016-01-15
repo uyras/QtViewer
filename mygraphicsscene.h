@@ -46,7 +46,6 @@ public slots:
     void updateMagneticCirclePos(); //обновить позицию магнитного круга
     void setAutoCoffs(); //вычислить средние коэффициенты и установить
 
-
 private:
     PartArray * backupSys;
     MagneticCircle* circle;
