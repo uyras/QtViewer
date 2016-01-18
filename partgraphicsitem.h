@@ -21,8 +21,6 @@ public:
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) Q_DECL_OVERRIDE;
     int type() const;
-    void mCoff(double coff);
-    void spaceCoff(double coff);
 
     Part* P();
 

@@ -23,7 +23,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    sysprop()
+    sysprop(this)
 {
     ui->setupUi(this);
 
@@ -34,16 +34,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->surface, SIGNAL(scaleUp()), this, SLOT(scaleUp()));
     connect(ui->surface, SIGNAL(scaleDown()), this, SLOT(scaleDown()));
 
-    this->Parts = ui->surface->scene();
-
     //изменение состояния магнитной системы
-    connect(this->Parts, SIGNAL(systemChanged()),this, SLOT(recalcSystemValues()));
+    connect(this, SIGNAL(updateSys()), ui->surface->scene(), SLOT(update()));
+    connect(ui->surface->scene(), SIGNAL(systemChanged()), this, SLOT(recalcSystemInfo()));
 
-    //окно свойств системы
-    sysprop.sys = Parts->sys;
+    //открываем закрываем окно свойств системы
     connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
-    connect(Parts, SIGNAL(systemChanged()), &sysprop, SLOT(updateData()));
-    connect(&sysprop,SIGNAL(sysUpdated()), Parts, SLOT(update(QRectF)));
+
+
+
+    //обновляем данные в диалоге свойств
 }
 
 MainWindow::~MainWindow()
@@ -51,29 +51,16 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::paintEvent(QPaintEvent *pe){
-    Q_UNUSED(pe);
-}
-
-void MainWindow::emptyENFolder(){
-	QDir dir("en");
-	if (dir.exists()){
-		dir.removeRecursively();
-	}
-	dir.cd(QDir::currentPath());
-	dir.mkdir("en");
-}
-
 void MainWindow::saveParticles(){
-
+    StateMachineFree s = sys.state;
+    if (sys.Minstate().size()>0)
+        sys.setToGroundState();
+    if (sys.Maxstate().size()>0)
+        sys.setToMaximalState();
+    sys.state = s;
 	QString filename = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения");
-
 	if (!filename.isEmpty()) {
-		std::string s = filename.toStdString();
-		char * cfilename = new char [s.length()+1];
-		std::strcpy (cfilename, s.c_str());
-
-        this->Parts->save(cfilename);
+        sys.save(filename);
 	}
 }
 
@@ -83,28 +70,41 @@ void MainWindow::loadParticles(QString filename){
         filename = QFileDialog::getOpenFileName(this,"Выберите конфигурацию файла");
 
     if (!filename.isEmpty()) {
-        this->Parts->load(filename);
-	}
+        sys.load(filename);
+        ui->surface->scene()->init(&sys);
+    }
+    //устанавливаем автоматические коэффициенты
+    this->toggleAutoCoff(ui->autoScale->isChecked());
 }
 
-void MainWindow::clearParticles(){
-    Parts->clear();
-}
-
-void MainWindow::setMState(double m){
-	mState->setText("m=" + QString().setNum(m));
-}
-
-void MainWindow::setE1State(double e1){
-	mState->setText("E1=" + QString().setNum(e1));
-}
-
-void MainWindow::setE2State(double e2){
-	mState->setText("E2=" + QString().setNum(e2));
-}
-
-void MainWindow::scaleSystem(){
-    //Parts->scaleSystem(ui->resizeDelimiter->value());
+void MainWindow::toggleAutoCoff(bool ok)
+{
+    if (ok){
+        //считаем авто коэфф.
+        const double normalM = 25.,
+                normalSpace=50.;
+        double averM=0., minSpace=sys[0]->pos.space(sys[1]->pos);
+        Part *temp1, *temp2;
+        vector<Part*>::iterator iter1 = sys.parts.begin(), iter2;
+        int i=0;
+        while (iter1!=sys.parts.end()){
+            temp1 = *iter1;
+            averM = (averM*(double)i+temp1->m.length())/(double)(i+1);
+            iter2=iter1;
+            iter2++;
+            while (iter2!=sys.parts.end()){
+                temp2 = *iter2;
+                temp1->pos.space(temp2->pos);
+                iter2++;
+            }
+            iter1++; i++;
+        }
+        ui->surface->scene()->setCoffs(normalM/averM, normalSpace/minSpace);
+    } else {
+        //устанавливаем по умлочанию
+        ui->surface->scene()->setCoffs(1., 1.);
+    }
+    emit ui->surface->scene()->updatePoses();
 }
 
 void MainWindow::scaleUp(){
@@ -115,8 +115,38 @@ void MainWindow::scaleDown(){
     ui->scaler->setValue(ui->scaler->value() - ui->scaler->pageStep());
 }
 
-void MainWindow::recalcSystemValues()
+void MainWindow::recalcSystemInfo()
 {
-    ui->infoLbl->setText(QString("E=%1").arg(Parts->sys->E()));
-    qDebug()<<Parts->sys->E();
+    ui->infoLbl->setText(QString("E=%1").arg(sys.E()));
+    emit sysprop.updateData(&sys);
+}
+
+void MainWindow::setMinState()
+{
+    sys.setMinstate(sys.State());
+    emit updateSys();
+}
+
+void MainWindow::getMinState()
+{
+    sys.setState(sys.Minstate());
+    emit updateSys();
+}
+
+void MainWindow::setMaxState()
+{
+    sys.setMaxstate(sys.State());
+    emit updateSys();
+}
+
+void MainWindow::getMaxState()
+{
+    sys.setState(sys.Maxstate());
+    emit updateSys();
+}
+
+void MainWindow::clearCurrentState()
+{
+    sys.state.reset();
+    emit updateSys();
 }

@@ -13,22 +13,14 @@ class SystemProperties : public QWidget
     Q_OBJECT
 
 public:
-    explicit SystemProperties(QWidget *parent = 0);
+    explicit SystemProperties(QWidget *parent);
     ~SystemProperties();
-    PartArray *sys;
 
 signals:
     void sysUpdated();
 
 public slots:
-    void updateData();
-
-    //операции с минимумом
-    void setMinState();
-    void getMinState();
-    void setMaxState();
-    void getMaxState();
-    void clearCurrentState();
+    void updateData(PartArray *sys); //обновить все данные в форме
 
 private:
     Ui::SystemProperties *ui;

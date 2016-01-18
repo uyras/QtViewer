@@ -20,32 +20,32 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void updateSys();
+
 public slots:
-
-    void paintEvent( QPaintEvent *event );
-
     void saveParticles();
 
     void loadParticles(QString filename="");
 
-    void clearParticles();
-
-    void setMState(double m);
-    void setE1State(double e1);
-    void setE2State(double e2);
-
-    void scaleSystem(); //масштабировать систему (не меняя диаметра частиц)
+    void toggleAutoCoff(bool ok); //переключает коэффиценты из ручного решима в автоматический
 
     void scaleUp(); //Увеличивает масштаб области отображения
     void scaleDown(); //уменьшает масштаб области отображения
 
-    void recalcSystemValues();
+    void recalcSystemInfo(); //пересчитывает параметры на всех формах
+
+    //операции с минимумом и максимумом
+    void setMinState();
+    void getMinState();
+    void setMaxState();
+    void getMaxState();
+    void clearCurrentState();
 
 private:
     Ui::MainWindow *ui;
     SystemProperties sysprop;
     PartArray sys;
-    void emptyENFolder();
 };
 
 #endif // MAINWINDOW_H

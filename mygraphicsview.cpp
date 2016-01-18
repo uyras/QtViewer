@@ -60,7 +60,6 @@ void MyGraphicsView::changeOperateMode(int mode)
 
 void MyGraphicsView::dbgSlot()
 {
-    scene()->sys->save("1.dat");
     scene()->update();
 }
 

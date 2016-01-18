@@ -9,13 +9,13 @@ PartGraphicsItem::PartGraphicsItem(Part *p):
 }
 
 QRectF PartGraphicsItem::boundingRect() const{
-    double mlen = part->m.length();
+    double mlen = part->m.length() * myScene()->mCoff;
     return QRectF(-1. * mlen, -1. * mlen, 2. * mlen, 2. * mlen);
 }
 
 QPainterPath PartGraphicsItem::shape() const{
     QPainterPath path;
-    double r = part->m.length();
+    double r = part->m.length() * myScene()->mCoff;
     path.addEllipse(r*-1, r*-1, r*2+1, r*2+1);
     return path;
 }
@@ -31,7 +31,7 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     #endif*/
 
     painter->rotate(part->m.grade());
-    double mlen = part->m.length();
+    double mlen = part->m.length() * myScene()->mCoff;
 
     //маленький красный крестик в центре частицы
     painter->setPen(Qt::red);
@@ -67,17 +67,6 @@ int PartGraphicsItem::type() const
     return Type;
 }
 
-void PartGraphicsItem::mCoff(double coff)
-{
-    part->m*=coff;
-}
-
-void PartGraphicsItem::spaceCoff(double coff)
-{
-    part->pos *= coff;
-    updatePos();
-}
-
 Part* PartGraphicsItem::PartGraphicsItem::P()
 {
     return part;
@@ -98,6 +87,6 @@ void PartGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void PartGraphicsItem::updatePos()
 {
-    this->setPos(part->pos.x, part->pos.y);
+    this->setPos(part->pos.x * myScene()->spaceCoff, part->pos.y * myScene()->spaceCoff);
 }
 

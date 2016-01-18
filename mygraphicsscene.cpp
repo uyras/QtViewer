@@ -5,21 +5,25 @@ MyGraphicsScene::MyGraphicsScene(QObject *parent) :
     doubleArrows(true),
     circle(NULL),
     spaceCoff(1),
-    mCoff(1),
-    backupSys(0)
+    mCoff(1)
 {
     Q_UNUSED(parent);
     setItemIndexMethod(NoIndex);
-    sys = new PartArray();
-    backupSys = new PartArray();
     connect(this,SIGNAL(changed(QList<QRectF>)),this,SIGNAL(systemChanged()));
 }
 
-MyGraphicsScene::~MyGraphicsScene()
+void MyGraphicsScene::init(PartArray *sys)
 {
-    if (backupSys)
-        delete backupSys;
-    delete sys;
+    this->clear();
+    //рисуем частицы
+    vector<Part*>::iterator iter = sys->parts.begin();
+    while (iter != sys->parts.end()){
+        PartGraphicsItem *temp = new PartGraphicsItem(*iter);
+        this->addItem(temp);
+        temp->updatePos();
+        iter++;
+    }
+    emit update();
 }
 
 float MyGraphicsScene::getSize() const
@@ -32,68 +36,28 @@ void MyGraphicsScene::setSize(float value)
     this->_size = value;
 }
 
-void MyGraphicsScene::attach(Part *part)
+void MyGraphicsScene::setCoffs(double m, double space)
 {
-    PartGraphicsItem *temp = new PartGraphicsItem(part);
-    temp->mCoff(this->mCoff);
-    temp->spaceCoff(this->spaceCoff);
-    this->addItem(temp);
+    this->spaceCoff = space;
+    this->mCoff = m;
 }
 
-void MyGraphicsScene::setSpaceCoff(double coff)
+void MyGraphicsScene::updatePoses()
 {
-    QList<QGraphicsItem*> ilist = this->items();
-    PartGraphicsItem *temp;
-
-    for (int i=0; i<ilist.size(); i++){
-        temp = qgraphicsitem_cast<PartGraphicsItem*>(ilist.at(i));
-        temp->spaceCoff(coff / this->spaceCoff);
+    QList<QGraphicsItem*> lst = this->items();
+    QList<QGraphicsItem*>::iterator iter = lst.begin();
+    while (iter!=lst.end()){
+        PartGraphicsItem* temp = qgraphicsitem_cast<PartGraphicsItem*>(*iter);
+        emit temp->updatePos();
+        iter++;
     }
-    spaceCoff = coff;
-}
-
-void MyGraphicsScene::setMCoff(double coff)
-{
-    QList<QGraphicsItem*> ilist = this->items();
-    PartGraphicsItem *temp;
-
-    for (int i=0; i<ilist.size(); i++){
-        temp = qgraphicsitem_cast<PartGraphicsItem*>(ilist.at(i));
-        temp->mCoff(coff / this->mCoff);
-    }
-    mCoff = coff;
+    emit update();
 }
 
 void MyGraphicsScene::clear()
 {
-    removeMagneticCircle();
     QGraphicsScene::clear();
-    sys->clear();
-    spaceCoff = 0; mCoff = 0;
-}
-
-void MyGraphicsScene::load(QString file)
-{
-    backupSys->load(file);
-    *sys = *backupSys;
-    sys->state = backupSys->state;
-    //рисуем частицы
-    vector<Part*>::iterator iter = sys->parts.begin();
-    while (iter != sys->parts.end()){
-        emit this->attach(*iter);
-        iter++;
-    }
-    setAutoCoffs();
-    emit update();
-    emit systemChanged();
-}
-
-void MyGraphicsScene::save(QString file)
-{
-    backupSys->state = sys->state;
-    backupSys->setMaxstate(sys->Maxstate());
-    backupSys->setMinstate(sys->Minstate());
-    backupSys->save(file);
+    spaceCoff = 1; mCoff = 1;
 }
 
 void MyGraphicsScene::addMagneticCircle()
@@ -145,33 +109,4 @@ void MyGraphicsScene::updateMagneticCirclePos()
         circle->setM(QPointF(m.x, m.y));
         circle->setPos((minx+maxx)/2.,(miny+maxy)/2.);
     }
-}
-
-void MyGraphicsScene::setAutoCoffs()
-{
-    const double normalM = 25.,
-            normalSpace=50.;
-    double averM=0., minSpace=sys->parts[0]->pos.space(sys->parts[1]->pos);
-    Part *temp1, *temp2;
-    vector<Part*>::iterator iter1 = sys->parts.begin(), iter2;
-    int i=0;
-    while (iter1!=sys->parts.end()){
-        temp1 = *iter1;
-        averM = (averM*(double)i+temp1->m.length())/(double)(i+1);
-        iter2=iter1;
-        iter2++;
-        while (iter2!=sys->parts.end()){
-            temp2 = *iter2;
-            temp1->pos.space(temp2->pos);
-            iter2++;
-        }
-        iter1++; i++;
-    }
-    setSpaceCoff(normalSpace/minSpace);
-    setMCoff(normalM/averM);
-    update();
-}
-
-void MyGraphicsScene::keyPressEvent(QKeyEvent *event){
-
 }
