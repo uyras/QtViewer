@@ -24,6 +24,7 @@ signals:
     void updateSys();
 
 public slots:
+    void saveAsParticles(QString fname = QString());
     void saveParticles();
 
     void loadParticles(QString filename="");
@@ -46,6 +47,7 @@ private:
     Ui::MainWindow *ui;
     SystemProperties sysprop;
     PartArray sys;
+    QString filename;
 };
 
 #endif // MAINWINDOW_H

@@ -23,7 +23,26 @@ SystemProperties::~SystemProperties()
 
 void SystemProperties::updateData(PartArray *sys)
 {
-    ui->currentStateLbl->setText(QString::fromStdString(sys->state.toString()));
-    ui->minStateLbl->setText(QString::fromStdString(sys->Minstate().toString()));
-    ui->maxStateLbl->setText(QString::fromStdString(sys->Maxstate().toString()));
+
+    ui->currentStateLbl->setText(split(QString::fromStdString(sys->state.toString())));
+    ui->minStateLbl->setText(split(QString::fromStdString(sys->Minstate().toString())));
+    ui->maxStateLbl->setText(split(QString::fromStdString(sys->Maxstate().toString())));
+    ui->partsNumberLabel->setText(QString::number(sys->size()));
+}
+
+QString SystemProperties::split(const QString &s)
+{
+    QString pathNameClean(s);
+
+    int c = pathNameClean.length();
+    int n=30; //каждые сколько символов разбивать на подстроки
+
+    if( c > n)
+    {
+        for(int i = 1; i <= c/n; i++)
+        {
+            pathNameClean.insert(i * n, " ");
+        }
+    }
+    return pathNameClean;
 }

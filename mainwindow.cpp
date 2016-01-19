@@ -40,28 +40,41 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //открываем закрываем окно свойств системы
     connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
-
-
+    sysprop.setVisible(ui->systemProperties->isChecked());
 
     //обновляем данные в диалоге свойств
 }
 
 MainWindow::~MainWindow()
 {
+    sysprop.close();
 	delete ui;
 }
 
-void MainWindow::saveParticles(){
-    StateMachineFree s = sys.state;
-    if (sys.Minstate().size()>0)
-        sys.setToGroundState();
-    if (sys.Maxstate().size()>0)
-        sys.setToMaximalState();
-    sys.state = s;
-	QString filename = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения");
-	if (!filename.isEmpty()) {
-        sys.save(filename);
-	}
+void MainWindow::saveAsParticles(QString fname){
+    if (fname.isEmpty())
+        fname = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения");
+
+    if (!fname.isEmpty()) {
+        if (QFile::exists(fname)){
+            QMessageBox msgBox;
+            msgBox.setText(QString("Файл %1 существует.").arg(fname));
+            msgBox.setInformativeText("Перезаписать файл?");
+            msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Cancel);
+
+            if (!msgBox.exec()) {
+                return;
+            }
+        }
+
+        sys.save(fname);
+    }
+}
+
+void MainWindow::saveParticles()
+{
+    saveAsParticles(filename);
 }
 
 void MainWindow::loadParticles(QString filename){
@@ -72,6 +85,8 @@ void MainWindow::loadParticles(QString filename){
     if (!filename.isEmpty()) {
         sys.load(filename);
         ui->surface->scene()->init(&sys);
+        this->filename = filename;
+        this->setWindowTitle(QString(this->filename).prepend("QtViewer: "));
     }
     //устанавливаем автоматические коэффициенты
     this->toggleAutoCoff(ui->autoScale->isChecked());

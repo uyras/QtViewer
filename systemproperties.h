@@ -24,6 +24,7 @@ public slots:
 
 private:
     Ui::SystemProperties *ui;
+    QString split(const QString &s);
 };
 
 #endif // SYSTEMPROPERTIES_H

@@ -328,6 +328,9 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Свойства частицы</string>
    </property>
@@ -340,7 +343,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Свойства системы</string>
@@ -571,11 +574,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>saveAsBtn</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveAsParticles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>saveParticles()</slot>
   <slot>loadParticles()</slot>
   <slot>clearParticles()</slot>
   <slot>toggleAutoCoff(bool)</slot>
+  <slot>saveAsParticles()</slot>
  </slots>
 </ui>
