@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //открываем закрываем окно свойств системы
     connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
     sysprop.setVisible(ui->systemProperties->isChecked());
+    ui->widget_2->layout()->addWidget(&sysprop);
 
     //обновляем данные в диалоге свойств
 }
@@ -163,5 +164,11 @@ void MainWindow::getMaxState()
 void MainWindow::clearCurrentState()
 {
     sys.state.reset();
+    emit updateSys();
+}
+
+void MainWindow::setInteractionRange(double val)
+{
+    sys.setInteractionRange(val);
     emit updateSys();
 }

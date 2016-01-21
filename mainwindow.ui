@@ -15,107 +15,134 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>3</number>
-    </property>
-    <property name="leftMargin">
-     <number>5</number>
-    </property>
-    <property name="topMargin">
-     <number>5</number>
-    </property>
-    <property name="rightMargin">
-     <number>5</number>
-    </property>
-    <property name="bottomMargin">
-     <number>5</number>
-    </property>
     <item>
-     <widget class="QSlider" name="scaler">
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>300</number>
-      </property>
-      <property name="pageStep">
-       <number>10</number>
-      </property>
-      <property name="value">
-       <number>50</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>10</number>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="MyGraphicsView" name="surface">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="backgroundBrush">
-       <brush brushstyle="NoBrush">
-        <color alpha="255">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </property>
-      <property name="foregroundBrush">
-       <brush brushstyle="NoBrush">
-        <color alpha="255">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </property>
-      <property name="interactive">
-       <bool>false</bool>
-      </property>
-      <property name="sceneRect">
-       <rectf>
-        <x>0.000000000000000</x>
-        <y>0.000000000000000</y>
-        <width>0.000000000000000</width>
-        <height>0.000000000000000</height>
-       </rectf>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="renderHints">
-       <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform</set>
-      </property>
-      <property name="dragMode">
-       <enum>QGraphicsView::ScrollHandDrag</enum>
-      </property>
-      <property name="transformationAnchor">
-       <enum>QGraphicsView::NoAnchor</enum>
-      </property>
-      <property name="resizeAnchor">
-       <enum>QGraphicsView::AnchorUnderMouse</enum>
-      </property>
-      <property name="viewportUpdateMode">
-       <enum>QGraphicsView::MinimalViewportUpdate</enum>
-      </property>
-      <property name="optimizationFlags">
-       <set>QGraphicsView::IndirectPainting</set>
-      </property>
+     <widget class="QWidget" name="widget_2" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>5</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="viewpane" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QSlider" name="scaler">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>300</number>
+            </property>
+            <property name="pageStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksBelow</enum>
+            </property>
+            <property name="tickInterval">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="MyGraphicsView" name="surface">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="backgroundBrush">
+             <brush brushstyle="NoBrush">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </property>
+            <property name="foregroundBrush">
+             <brush brushstyle="NoBrush">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </property>
+            <property name="interactive">
+             <bool>false</bool>
+            </property>
+            <property name="sceneRect">
+             <rectf>
+              <x>0.000000000000000</x>
+              <y>0.000000000000000</y>
+              <width>0.000000000000000</width>
+              <height>0.000000000000000</height>
+             </rectf>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="renderHints">
+             <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform</set>
+            </property>
+            <property name="dragMode">
+             <enum>QGraphicsView::ScrollHandDrag</enum>
+            </property>
+            <property name="transformationAnchor">
+             <enum>QGraphicsView::NoAnchor</enum>
+            </property>
+            <property name="resizeAnchor">
+             <enum>QGraphicsView::AnchorUnderMouse</enum>
+            </property>
+            <property name="viewportUpdateMode">
+             <enum>QGraphicsView::MinimalViewportUpdate</enum>
+            </property>
+            <property name="optimizationFlags">
+             <set>QGraphicsView::IndirectPainting</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>
@@ -306,6 +333,9 @@
    </property>
   </action>
   <action name="export_jpg">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Экспорт jpg</string>
    </property>
@@ -314,6 +344,9 @@
    </property>
   </action>
   <action name="export_pdf">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Экспорт pdf</string>
    </property>
@@ -343,7 +376,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Свойства системы</string>
@@ -383,6 +416,9 @@
   <action name="ruler">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Линейка</string>
@@ -479,86 +515,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>refreshBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>surface</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>16</x>
-     <y>328</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>255</x>
-     <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>modeBox</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>surface</receiver>
-   <slot>changeOperateMode(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>460</x>
-     <y>328</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>255</x>
-     <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>refreshMenuItem</sender>
-   <signal>triggered()</signal>
-   <receiver>surface</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>255</x>
-     <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dbgButton</sender>
-   <signal>clicked()</signal>
-   <receiver>surface</receiver>
-   <slot>dbgSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>71</x>
-     <y>328</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>255</x>
-     <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>doubleArrows</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>surface</receiver>
-   <slot>toggleDoubleArrows(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>255</x>
-     <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>autoScale</sender>
    <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
@@ -587,6 +543,22 @@
     <hint type="destinationlabel">
      <x>255</x>
      <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modeBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>surface</receiver>
+   <slot>changeOperateMode(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>456</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>177</y>
     </hint>
    </hints>
   </connection>

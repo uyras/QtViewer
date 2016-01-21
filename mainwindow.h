@@ -42,6 +42,7 @@ public slots:
     void setMaxState();
     void getMaxState();
     void clearCurrentState();
+    void setInteractionRange(double);
 
 private:
     Ui::MainWindow *ui;

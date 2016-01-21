@@ -45,6 +45,7 @@ void MyGraphicsView::scaleTo(int size){
 
 void MyGraphicsView::changeOperateMode(int mode)
 {
+    qDebug()<<"mode changed to"<<mode;
     switch(mode){
     case 0: default:
         this->setDragMode(QGraphicsView::ScrollHandDrag);
@@ -109,10 +110,16 @@ void MyGraphicsView::resizeEvent(QResizeEvent *event)
 
 void MyGraphicsView::updatePreview(const QList<QRectF> &regions)
 {
-    if (regions.size()>0)
-        preview.setSceneRect(scene()->sceneRect());
-    /*qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
-    qDebug()<<regions;*/
+    if (regions.size()>0){
+        QRectF sr = scene()->sceneRect();
+        QRectF r(sr.left()-sr.width(),sr.top()-sr.height(),sr.width()*3.,sr.height()*3.);
+        setSceneRect(r);
+        qDebug()<<scene()->sceneRect();
+        qDebug()<<sceneRect();
+
+    qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
+    qDebug()<<regions;
+    }
 }
 
 /*void MyGraphicsView::drawForeground(QPainter *paint, const QRectF &rect)

@@ -21,9 +21,11 @@ signals:
 
 public slots:
     void updateData(PartArray *sys); //обновить все данные в форме
+    void changeInteractionRange();
 
 private:
     Ui::SystemProperties *ui;
+    QWidget *p;
     QString split(const QString &s);
 };
 
