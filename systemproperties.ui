@@ -6,15 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
+    <width>258</width>
     <height>351</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>259</width>
+    <height>524287</height>
+   </size>
   </property>
   <property name="floating">
    <bool>false</bool>
@@ -192,19 +198,6 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <widget class="QToolButton" name="minStateLoadBtn">
           <property name="toolTip">
            <string>Установить минимальное состояние как текущее</string>
@@ -348,19 +341,6 @@
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_7">
-        <item>
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item>
          <widget class="QToolButton" name="maxStateLoadBtn">
           <property name="toolTip">
