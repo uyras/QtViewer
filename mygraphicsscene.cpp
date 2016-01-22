@@ -40,6 +40,8 @@ void MyGraphicsScene::setCoffs(double m, double space)
 {
     this->spaceCoff = space;
     this->mCoff = m;
+
+    this->updatePoses();
 }
 
 void MyGraphicsScene::updatePoses()
@@ -51,7 +53,7 @@ void MyGraphicsScene::updatePoses()
         emit temp->updatePos();
         iter++;
     }
-    emit update();
+    update();
 }
 
 void MyGraphicsScene::clear()

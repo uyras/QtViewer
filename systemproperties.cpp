@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 
 SystemProperties::SystemProperties(QWidget *parent) :
-    QWidget(parent),
+    QDockWidget(parent),
     ui(new Ui::SystemProperties),
     p(parent)
 {
@@ -57,13 +57,13 @@ QString SystemProperties::split(const QString &s)
     QString pathNameClean(s);
 
     int c = pathNameClean.length();
-    int n=30; //каждые сколько символов разбивать на подстроки
+    int n=10; //каждые сколько символов разбивать на подстроки
 
     if( c > n)
     {
-        for(int i = 1; i <= c/n; i++)
+        for(int i = n; i < c; i+=n)
         {
-            pathNameClean.insert(i * n, " ");
+            pathNameClean.insert(i-1, " ");
         }
     }
     return pathNameClean;

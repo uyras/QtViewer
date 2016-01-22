@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
     sysprop.setVisible(ui->systemProperties->isChecked());
     ui->widget_2->layout()->addWidget(&sysprop);
+    connect(&sysprop,SIGNAL(visibilityChanged(bool)),ui->systemProperties,SLOT(setChecked(bool)));
 
     //обновляем данные в диалоге свойств
 }
@@ -53,6 +54,13 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::saveAsParticles(QString fname){
+    if (this->filename.isEmpty()){
+        QMessageBox(QMessageBox::Critical,
+                    "Ошибка сохранения",
+                    "Файл не открыт, сохранение невозможно!").exec();
+        return;
+    }
+
     if (fname.isEmpty())
         fname = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения");
 
@@ -81,16 +89,27 @@ void MainWindow::saveParticles()
 void MainWindow::loadParticles(QString filename){
 
     if (filename.isEmpty())
-        filename = QFileDialog::getOpenFileName(this,"Выберите конфигурацию файла");
+        filename = QFileDialog::getOpenFileName(this, "Открытие файла магнитной системы",
+            QString(),
+            tr("Файл магнитной системы (*.mfsys)"));
 
     if (!filename.isEmpty()) {
         sys.load(filename);
-        ui->surface->scene()->init(&sys);
-        this->filename = filename;
-        this->setWindowTitle(QString(this->filename).prepend("QtViewer: "));
+        if (sys.size()>0){
+            ui->surface->scene()->init(&sys);
+            this->filename = filename;
+            this->setWindowTitle(QString(this->filename).prepend("QtViewer: "));
+        } else {
+            QMessageBox(QMessageBox::Critical,
+                        "Ошибка чтения",
+                        "Указанный файл имеет неверный формат, либо система пуста").exec();
+        }
     }
     //устанавливаем автоматические коэффициенты
     this->toggleAutoCoff(ui->autoScale->isChecked());
+
+    //ставим в зону видимости все изображение
+    emit ui->surface->dbgSlot();
 }
 
 void MainWindow::toggleAutoCoff(bool ok)
@@ -99,7 +118,13 @@ void MainWindow::toggleAutoCoff(bool ok)
         //считаем авто коэфф.
         const double normalM = 25.,
                 normalSpace=50.;
-        double averM=0., minSpace=sys[0]->pos.space(sys[1]->pos);
+        double averM=0., minSpace;
+        //если частиц в системе слишком мало
+        if (sys.size()>1)
+            minSpace=sys[0]->pos.space(sys[1]->pos);
+        else
+            minSpace=50;
+
         Part *temp1, *temp2;
         vector<Part*>::iterator iter1 = sys.parts.begin(), iter2;
         int i=0;
@@ -120,7 +145,6 @@ void MainWindow::toggleAutoCoff(bool ok)
         //устанавливаем по умлочанию
         ui->surface->scene()->setCoffs(1., 1.);
     }
-    emit ui->surface->scene()->updatePoses();
 }
 
 void MainWindow::scaleUp(){

@@ -61,7 +61,8 @@ void MyGraphicsView::changeOperateMode(int mode)
 
 void MyGraphicsView::dbgSlot()
 {
-    scene()->update();
+    qDebug()<<this->scene()->sceneRect();
+    this->fitInView(this->scene()->sceneRect(),Qt::KeepAspectRatio);
 }
 
 void MyGraphicsView::toggleDoubleArrows(bool on)

@@ -28,11 +28,19 @@ HEADERS  += mainwindow.h \
     systemproperties.h
 
 FORMS    += mainwindow.ui \
+    systemproperties_old.ui \
     systemproperties.ui
 
 INCLUDEPATH += "../partsEngine/"
 
 LIBS += -L$$PWD/../partsEngine -lPartsEngine
 
+win32{
+    RC_FILE = QtViewer.rc
+    #CONFIG(release,debug|release){
+     #   DESTDIR = "build-windows/$$PWD"
+    #}
+}
+
 RESOURCES += \
-    res.qrc
+    icons.qrc

@@ -1,14 +1,14 @@
 #ifndef SYSTEMPROPERTIES_H
 #define SYSTEMPROPERTIES_H
 
-#include <QWidget>
+#include <QDockWidget>
 #include "PartArray.h"
 
 namespace Ui {
 class SystemProperties;
 }
 
-class SystemProperties : public QWidget
+class SystemProperties : public QDockWidget
 {
     Q_OBJECT
 

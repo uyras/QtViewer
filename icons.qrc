@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/back.ico</file>
+        <file>icons/forward.ico</file>
+        <file>icons/new.ico</file>
+        <file>icons/refresh.ico</file>
+        <file>icons/save.ico</file>
+    </qresource>
+</RCC>

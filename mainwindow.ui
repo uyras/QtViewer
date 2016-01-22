@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Магнитный симулятор</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icon.png</normaloff>icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -169,8 +173,14 @@
           <string>...</string>
          </property>
          <property name="icon">
-          <iconset theme="view-refresh">
-           <normaloff>.</normaloff>.</iconset>
+          <iconset theme="view-refresh" resource="icons.qrc">
+           <normaloff>:/icons/refresh.ico</normaloff>:/icons/refresh.ico</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -246,7 +256,7 @@
      <x>0</x>
      <y>0</y>
      <width>511</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">
@@ -284,7 +294,8 @@
   <action name="openBtn">
    <property name="icon">
     <iconset theme="document-open">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Открыть</string>
@@ -308,7 +319,8 @@
   <action name="saveBtn">
    <property name="icon">
     <iconset theme="document-save">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Сохранить</string>
@@ -323,7 +335,8 @@
   <action name="saveAsBtn">
    <property name="icon">
     <iconset theme="document-save-as">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Сохранить как</string>
@@ -433,7 +446,8 @@
   <action name="aboutBtn">
    <property name="icon">
     <iconset theme="dialog-information">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>О программе</string>
@@ -445,7 +459,8 @@
   <action name="exitBtn">
    <property name="icon">
     <iconset theme="application-exit">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Выход</string>
@@ -457,7 +472,8 @@
   <action name="refreshMenuItem">
    <property name="icon">
     <iconset theme="view-refresh">
-     <normaloff>.</normaloff>.</iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Обовить</string>
@@ -480,7 +496,9 @@
    </slots>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>saveBtn</sender>
@@ -559,6 +577,86 @@
     <hint type="destinationlabel">
      <x>255</x>
      <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exitBtn</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleArrows</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>surface</receiver>
+   <slot>toggleDoubleArrows(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>refreshMenuItem</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>323</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>surface</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dbgButton</sender>
+   <signal>clicked()</signal>
+   <receiver>surface</receiver>
+   <slot>dbgSlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>181</y>
     </hint>
    </hints>
   </connection>
