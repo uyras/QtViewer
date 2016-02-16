@@ -1,0 +1,25 @@
+[header]
+version=2
+dimensions=2
+type=squarelattice
+size=9
+emin=-16.361
+emax=18.351
+state=000000000
+minstate=111000111
+maxstate=101101101
+interactionrange=0
+sizescale=1
+magnetizationscale=1
+[parts]
+0	0	0	0	0	1	0	0	
+1	0	1	0	0	1	0	0	
+2	0	2	0	0	1	0	0	
+3	1	0	0	0	1	0	0	
+4	1	1	0	0	1	0	0	
+5	1	2	0	0	1	0	0	
+6	2	0	0	0	1	0	0	
+7	2	1	0	0	1	0	0	
+8	2	2	0	0	1	0	0
+[square]
+3	3	1

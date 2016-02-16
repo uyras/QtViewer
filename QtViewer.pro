@@ -44,3 +44,5 @@ win32{
 
 RESOURCES += \
     icons.qrc
+
+CONFIG += c++11

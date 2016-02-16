@@ -256,19 +256,25 @@
      <x>0</x>
      <y>0</y>
      <width>511</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">
     <property name="title">
      <string>Файл</string>
     </property>
+    <widget class="QMenu" name="examplesMenu">
+     <property name="title">
+      <string>Примеры</string>
+     </property>
+    </widget>
     <addaction name="openBtn"/>
     <addaction name="saveBtn"/>
     <addaction name="saveAsBtn"/>
     <addaction name="export_jpg"/>
     <addaction name="export_pdf"/>
     <addaction name="exitBtn"/>
+    <addaction name="examplesMenu"/>
    </widget>
    <widget class="QMenu" name="viewMenu">
     <property name="title">
@@ -294,8 +300,7 @@
   <action name="openBtn">
    <property name="icon">
     <iconset theme="document-open">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Открыть</string>
@@ -319,8 +324,7 @@
   <action name="saveBtn">
    <property name="icon">
     <iconset theme="document-save">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Сохранить</string>
@@ -335,8 +339,7 @@
   <action name="saveAsBtn">
    <property name="icon">
     <iconset theme="document-save-as">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Сохранить как</string>
@@ -446,8 +449,7 @@
   <action name="aboutBtn">
    <property name="icon">
     <iconset theme="dialog-information">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>О программе</string>
@@ -459,8 +461,7 @@
   <action name="exitBtn">
    <property name="icon">
     <iconset theme="application-exit">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Выход</string>
@@ -472,14 +473,18 @@
   <action name="refreshMenuItem">
    <property name="icon">
     <iconset theme="view-refresh">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Обовить</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionAsd">
+   <property name="text">
+    <string>asd</string>
    </property>
   </action>
  </widget>

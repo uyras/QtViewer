@@ -1,0 +1,20 @@
+[header]
+version=2
+dimensions=2
+type=squarespinice
+size=4
+emin=-18.9706
+emax=14.9706
+state=1001
+minstate=1010
+maxstate=1001
+interactionrange=0
+sizescale=1
+magnetizationscale=1
+[parts]
+0	0.5	1	0	-1	0	0	1	
+1	0.5	0	0	1	0	0	0	
+2	0	0.5	0	0	1	0	0	
+3	1	0.5	0	0	-1	0	1
+[cells]
+0.5	0.5	0	0	0	1	2	3

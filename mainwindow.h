@@ -34,6 +34,8 @@ public slots:
     void scaleUp(); //Увеличивает масштаб области отображения
     void scaleDown(); //уменьшает масштаб области отображения
 
+    void setFileName(QString fname);
+
     void recalcSystemInfo(); //пересчитывает параметры на всех формах
 
     //операции с минимумом и максимумом
@@ -44,11 +46,14 @@ public slots:
     void clearCurrentState();
     void setInteractionRange(double);
 
+    void exampleClicked();
+
 private:
     Ui::MainWindow *ui;
     SystemProperties sysprop;
     PartArray sys;
     QString filename;
+    void initExamples();
 };
 
 #endif // MAINWINDOW_H

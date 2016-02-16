@@ -45,6 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&sysprop,SIGNAL(visibilityChanged(bool)),ui->systemProperties,SLOT(setChecked(bool)));
 
     //обновляем данные в диалоге свойств
+
+    //подгружаем примеры
+    initExamples();
 }
 
 MainWindow::~MainWindow()
@@ -78,6 +81,7 @@ void MainWindow::saveAsParticles(QString fname){
         }
 
         sys.save(fname);
+        setFileName(fname);
     }
 }
 
@@ -97,8 +101,7 @@ void MainWindow::loadParticles(QString filename){
         sys.load(filename);
         if (sys.size()>0){
             ui->surface->scene()->init(&sys);
-            this->filename = filename;
-            this->setWindowTitle(QString(this->filename).prepend("QtViewer: "));
+            setFileName(filename);
         } else {
             QMessageBox(QMessageBox::Critical,
                         "Ошибка чтения",
@@ -155,6 +158,13 @@ void MainWindow::scaleDown(){
     ui->scaler->setValue(ui->scaler->value() - ui->scaler->pageStep());
 }
 
+void MainWindow::setFileName(QString fname)
+{
+    this->filename = fname;
+    this->setWindowTitle(QString(this->filename).prepend("QtViewer: "));
+    ui->saveBtn->setEnabled(!filename.startsWith("examples/"));
+}
+
 void MainWindow::recalcSystemInfo()
 {
     ui->infoLbl->setText(QString("E=%1").arg(sys.E()));
@@ -195,4 +205,29 @@ void MainWindow::setInteractionRange(double val)
 {
     sys.setInteractionRange(val);
     emit updateSys();
+}
+
+void MainWindow::exampleClicked()
+{
+    QAction *temp = qobject_cast<QAction*>(sender());
+    if (temp)
+        loadParticles(QString(temp->text()).prepend("examples/"));
+}
+
+void MainWindow::initExamples()
+{
+    QDir dir("examples");
+    if (!dir.exists())
+        return;
+    QStringList filenames = dir.entryList(QStringList("*.mfsys"),QDir::Files);
+    if (filenames.length()==0)
+        return ;
+    ui->examplesMenu->setEnabled(true);
+    QAction* temp;
+    for (int i=0; i<filenames.length(); i++){
+        temp = new QAction(filenames[i],this);
+        ui->examplesMenu->addAction(temp);
+        connect(temp,SIGNAL(triggered(bool)),this,SLOT(exampleClicked()));
+        qDebug()<<filenames[i];
+    }
 }
