@@ -2,10 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QtViewer"
-#define MyAppVersion "0.1"
+#define MyAppVersion "0.3"
 #define MyAppPublisher "Far Eastern Federal University, departament of theoretical and experimental physics"
 #define MyAppURL "http://tef-dvfu.ru"
 #define MyAppExeName "QtViewer.exe"
+#define SourceDir "../../build-QtViewer-Desktop_Qt_5_6_0_MSVC2015_64bit-Release/release"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -21,10 +22,12 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=qtviewer_{#MyAppVersion}_setup
+OutputBaseFilename=qtviewer_{#MyAppVersion}_setup_x64
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
+ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x64
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -34,21 +37,13 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "../build-windows/QtViewer.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/D3Dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/libGLESV2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/Qt5Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../build-windows/iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../build-windows/imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../build-windows/platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../build-windows/translations\*"; DestDir: "{app}\translations"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceDir}/QtViewer.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceDir}/\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceDir}/iconengines\*"; DestDir: "{app}\iconengines"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceDir}/imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceDir}/platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourceDir}/translations\*"; DestDir: "{app}\translations"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "examples/\*"; DestDir: "{app}\examples"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
