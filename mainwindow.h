@@ -3,10 +3,12 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QSettings>
 #include <vector>
 #include "PartArray.h"
 #include "mygraphicsview.h"
 #include "systemproperties.h"
+#include "statechangedialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +21,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void keyPressEvent(QKeyEvent * event);
+    void keyReleaseEvent(QKeyEvent * event);
 
 signals:
     void updateSys();
@@ -44,6 +49,7 @@ public slots:
     void setMaxState();
     void getMaxState();
     void clearCurrentState();
+    void changeCurrentState();
     void setInteractionRange(double);
 
     void exampleClicked();
@@ -53,7 +59,11 @@ private:
     SystemProperties sysprop;
     PartArray sys;
     QString filename;
+    Qt::KeyboardModifiers press; //чтобы запомнить кнопки в момент нажатия
     void initExamples();
+
+private slots:
+    void releaseModifiers();
 };
 
 #endif // MAINWINDOW_H

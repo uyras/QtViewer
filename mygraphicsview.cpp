@@ -30,6 +30,11 @@ MyGraphicsView::MyGraphicsView(QObject *parent) :
     */
 }
 
+MyGraphicsView::~MyGraphicsView()
+{
+    delete _scene;
+}
+
 
 
 MyGraphicsScene *MyGraphicsView::scene(){
@@ -61,7 +66,7 @@ void MyGraphicsView::changeOperateMode(int mode)
 
 void MyGraphicsView::dbgSlot()
 {
-    qDebug()<<this->scene()->sceneRect();
+    qDebug()<<"fit"<<this->scene()->sceneRect()<<this->scene()->items().size();
     this->fitInView(this->scene()->sceneRect(),Qt::KeepAspectRatio);
 }
 
@@ -94,11 +99,6 @@ void MyGraphicsView::wheelEvent(QWheelEvent *event){
             emit scaleUp();
         else
             emit scaleDown();
-        event->accept();
-    } else if (event->modifiers() == Qt::ControlModifier){
-        this->horizontalScrollBar()->setValue(this->horizontalScrollBar()->value()-event->delta());
-    } else if (event->modifiers() == Qt::AltModifier){
-        this->verticalScrollBar()->setValue(this->verticalScrollBar()->value()-event->delta());
     }
 
     QGraphicsView::wheelEvent(event);
@@ -115,15 +115,5 @@ void MyGraphicsView::updatePreview(const QList<QRectF> &regions)
         QRectF sr = scene()->sceneRect();
         QRectF r(sr.left()-sr.width(),sr.top()-sr.height(),sr.width()*3.,sr.height()*3.);
         setSceneRect(r);
-        qDebug()<<scene()->sceneRect();
-        qDebug()<<sceneRect();
-
-    qDebug()<<Random::Instance()->next()<<"called changed with regions"<<regions.size();
-    qDebug()<<regions;
     }
 }
-
-/*void MyGraphicsView::drawForeground(QPainter *paint, const QRectF &rect)
-{
-    paint->drawLine(0,0,20,20);
-}*/

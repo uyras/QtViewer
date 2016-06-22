@@ -18,6 +18,7 @@ class MyGraphicsView : public QGraphicsView
     Q_OBJECT
 public:
     explicit MyGraphicsView(QObject *parent = 0);
+    virtual ~MyGraphicsView();
     MyGraphicsScene* scene();
     MyGraphicsScene* _scene;
 

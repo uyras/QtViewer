@@ -7,6 +7,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QCoreApplication::setOrganizationName("QtViewer");
+    QCoreApplication::setApplicationName("QtViewer");
+
     MainWindow w;
 
 

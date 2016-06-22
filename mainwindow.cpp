@@ -39,12 +39,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->surface->scene(), SIGNAL(systemChanged()), this, SLOT(recalcSystemInfo()));
 
     //открываем закрываем окно свойств системы
-    connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
-    sysprop.setVisible(ui->systemProperties->isChecked());
     ui->widget_2->layout()->addWidget(&sysprop);
+    connect(ui->systemProperties, SIGNAL(triggered(bool)), &sysprop, SLOT(setVisible(bool)));
     connect(&sysprop,SIGNAL(visibilityChanged(bool)),ui->systemProperties,SLOT(setChecked(bool)));
 
     //обновляем данные в диалоге свойств
+    QSettings settings;
+    ui->systemProperties->setChecked(settings.value("settings/systemProperties",true).toBool());
+    ui->systemProperties->triggered(settings.value("settings/systemProperties",true).toBool());
+    ui->doubleArrows->setChecked(settings.value("settings/doubleArrows",true).toBool());
+    ui->autoScale->setChecked(settings.value("settings/autoScale",true).toBool());
+
+    //освобождаем шорткат при запуске действия
+    connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(releaseModifiers()));
 
     //подгружаем примеры
     initExamples();
@@ -52,8 +59,35 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    //сохраняем галочки
+    QSettings settings;
+    settings.setValue("settings/systemProperties", ui->systemProperties->isChecked());
+    settings.setValue("settings/doubleArrows", ui->doubleArrows->isChecked());
+    settings.setValue("settings/autoScale", ui->autoScale->isChecked());
+
     sysprop.close();
-	delete ui;
+    delete ui;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    qDebug()<<ui->systemProperties->isChecked();
+    press = event->modifiers();
+    if (press & Qt::ControlModifier){
+        ui->modeBox->setCurrentIndex(1);
+    }
+    qDebug()<<press;
+    QMainWindow::keyPressEvent(event);
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    qDebug()<<(event->modifiers()^press);
+    if ((event->modifiers()^press) & Qt::ControlModifier){
+        ui->modeBox->setCurrentIndex(0);
+    }
+    press = event->modifiers();
+    QMainWindow::keyReleaseEvent(event);
 }
 
 void MainWindow::saveAsParticles(QString fname){
@@ -64,10 +98,12 @@ void MainWindow::saveAsParticles(QString fname){
         return;
     }
 
+    QSettings settings;
     if (fname.isEmpty())
-        fname = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения");
+        fname = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения",settings.value("settings/lastPath",QString()).toString());
 
     if (!fname.isEmpty()) {
+        settings.setValue("settings/lastPath",fname);
         if (QFile::exists(fname)){
             QMessageBox msgBox;
             msgBox.setText(QString("Файл %1 существует.").arg(fname));
@@ -92,12 +128,15 @@ void MainWindow::saveParticles()
 
 void MainWindow::loadParticles(QString filename){
 
+    QSettings settings;
+
     if (filename.isEmpty())
         filename = QFileDialog::getOpenFileName(this, "Открытие файла магнитной системы",
-            QString(),
+            settings.value("settings/lastPath",QString()).toString(),
             tr("Файл магнитной системы (*.mfsys)"));
 
     if (!filename.isEmpty()) {
+        settings.setValue("settings/lastPath",filename);
         sys.load(filename);
         if (sys.size()>0){
             ui->surface->scene()->init(&sys);
@@ -201,6 +240,15 @@ void MainWindow::clearCurrentState()
     emit updateSys();
 }
 
+void MainWindow::changeCurrentState()
+{
+    StateChangeDialog dlg(this,"Изменени состояния системы", QString::fromStdString(sys.State().toString()));
+    if (dlg.exec()){
+        sys.state.fromString(dlg.getState().toStdString());
+        emit updateSys();
+    }
+}
+
 void MainWindow::setInteractionRange(double val)
 {
     sys.setInteractionRange(val);
@@ -230,4 +278,11 @@ void MainWindow::initExamples()
         connect(temp,SIGNAL(triggered(bool)),this,SLOT(exampleClicked()));
         qDebug()<<filenames[i];
     }
+}
+
+void MainWindow::releaseModifiers()
+{
+    press=Qt::NoModifier;
+    ui->modeBox->setCurrentIndex(0);
+    qDebug()<<"release modifiers";
 }

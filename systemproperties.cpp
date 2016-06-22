@@ -15,6 +15,7 @@ SystemProperties::SystemProperties(QWidget *parent) :
     connect(ui->minStateLoadBtn,SIGNAL(clicked(bool)), parent, SLOT(getMinState()));
     connect(ui->minStateSaveBtn,SIGNAL(clicked(bool)), parent, SLOT(setMinState()));
     connect(ui->currentStateClearBtn,SIGNAL(clicked(bool)), parent, SLOT(clearCurrentState()));
+    connect(ui->currentStateChangeBtn,SIGNAL(clicked(bool)), parent, SLOT(changeCurrentState()));
     connect(ui->interactionRangeSaveBtn,SIGNAL(clicked()), this, SLOT(changeInteractionRange()));
 }
 
@@ -25,10 +26,8 @@ SystemProperties::~SystemProperties()
 
 void SystemProperties::updateData(PartArray *sys)
 {
-
-    ui->currentStateLbl->setText(split(QString::fromStdString(sys->state.toString())));
-    ui->minStateLbl->setText(split(QString::fromStdString(sys->Minstate().toString())));
-    ui->maxStateLbl->setText(split(QString::fromStdString(sys->Maxstate().toString())));
+    ui->minStateCheck->setChecked((bool)sys->Minstate().size());
+    ui->maxStateCheck->setChecked((bool)sys->Maxstate().size());
     ui->eMinLbl->setText(QString::number(sys->EMin()));
     ui->eMaxLbl->setText(QString::number(sys->EMax()));
     ui->partsNumberLabel->setText(QString::number(sys->size()));

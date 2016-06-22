@@ -18,18 +18,20 @@ SOURCES += main.cpp\
     partgraphicsitem.cpp \
     mygraphicsscene.cpp \
     magneticcircle.cpp \
-    systemproperties.cpp
+    systemproperties.cpp \
+    statechangedialog.cpp
 
 HEADERS  += mainwindow.h \
     mygraphicsview.h \
     partgraphicsitem.h \
     mygraphicsscene.h \
     magneticcircle.h \
-    systemproperties.h
+    systemproperties.h \
+    statechangedialog.h
 
 FORMS    += mainwindow.ui \
-    systemproperties_old.ui \
-    systemproperties.ui
+    systemproperties.ui \
+    statechangedialog.ui
 
 INCLUDEPATH += "../partsEngine/"
 
