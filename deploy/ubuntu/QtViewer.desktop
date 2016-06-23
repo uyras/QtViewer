@@ -8,6 +8,7 @@ Categories=Viewer;Qt;
 Terminal=false
 Type=Application
 Version=1.0
+Path=/opt/QtViewer
 Name[ru]=QtViewer
 Comment[ru]=Вьюер для магнитных систем формата .mfsys, созданных библиотекой PartsEngine.
 GenericName[ru]=вьюер формата mfsys

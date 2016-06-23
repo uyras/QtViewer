@@ -12,9 +12,9 @@ fi
 
 echo "Making installer..."
 
-installerPath="../../installer/QtViewer"
+installerPath="../output"
 iconPath="../../icons"
-examplePath="../../examples"
+examplePath="../examples"
 
 #Remove old folder
 if [ -d $installerPath ]; then
@@ -41,6 +41,6 @@ cp -v $iconPath'/icon_64.png' $installerPath'/icons/64x64/qtviewer.png'
 cp -v $iconPath'/icon_128.png' $installerPath'/icons/128x128/qtviewer.png'
 cp -v $iconPath'/icon_256.png' $installerPath'/icons/256x256/qtviewer.png'
 
-tar -cvzf $installerPath'/../QtViewer.tar.gz' $installerPath
+tar -cvzf $installerPath'/QtViewer.tar.gz' $installerPath
 
 echo "...finished!" 
