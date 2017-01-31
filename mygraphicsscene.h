@@ -28,7 +28,7 @@ public:
 
     float getSize() const;
     void setSize(float value);
-    bool doubleArrows, autoScale, ruler;
+    bool doubleArrows, autoScale, ruler, showId;
     void setCoffs(double m, double space); //установить пространственный коэфф. для системы
     double spaceCoff, mCoff;
     void updatePoses();

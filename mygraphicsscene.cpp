@@ -3,6 +3,7 @@
 MyGraphicsScene::MyGraphicsScene(QObject *parent) :
     QGraphicsScene(parent),
     doubleArrows(true),
+    showId(false),
     circle(NULL),
     spaceCoff(1),
     mCoff(1)

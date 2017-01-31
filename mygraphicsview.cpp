@@ -76,6 +76,12 @@ void MyGraphicsView::toggleDoubleArrows(bool on)
     emit scene()->update();
 }
 
+void MyGraphicsView::toggleShowIds(bool on)
+{
+    scene()->showId = on;
+    emit scene()->update();
+}
+
 void MyGraphicsView::keyPressEvent(QKeyEvent *event){
     qDebug()<<this->geometry().width();
     if (event->modifiers() & (Qt::ShiftModifier | Qt::AltModifier)){

@@ -60,6 +60,10 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     };
     painter->drawPolygon(points,3);
 
+    //Id частицы
+    if (myScene()->showId)
+        painter->drawText(0,0,QString::number(part->Id()));
+
 }
 
 int PartGraphicsItem::type() const

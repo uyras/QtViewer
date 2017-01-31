@@ -40,6 +40,7 @@ public slots:
     void changeOperateMode(int mode);
     void dbgSlot();
     void toggleDoubleArrows(bool on);
+    void toggleShowIds(bool on);
     
 };
 

@@ -292,6 +292,7 @@
     <addaction name="autoScale"/>
     <addaction name="ruler"/>
     <addaction name="refreshMenuItem"/>
+    <addaction name="partIds"/>
    </widget>
    <widget class="QMenu" name="infoMenu">
     <property name="title">
@@ -496,6 +497,14 @@
     <string>asd</string>
    </property>
   </action>
+  <action name="partIds">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Id частицы</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -507,6 +516,7 @@
     <slot>changeOperateMode(int)</slot>
     <slot>dbgSlot()</slot>
     <slot>toggleDoubleArrows(bool)</slot>
+    <slot>toggleShowIds(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -671,6 +681,22 @@
     <hint type="destinationlabel">
      <x>255</x>
      <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>partIds</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>surface</receiver>
+   <slot>toggleShowIds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>177</y>
     </hint>
    </hints>
   </connection>
