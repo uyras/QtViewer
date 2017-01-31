@@ -40,11 +40,20 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     painter->setPen(Qt::black);
     //магнитный момент
+
+    double x1=0,y1=0,x2=0,y2=0,w=0;
     if (part->m.x!=0 || part->m.y!=0){
-        if (myScene()->doubleArrows)
-            painter->drawLine(-1. * mlen, 0, mlen*0.7,0);
-        else
-            painter->drawLine(0, 0, mlen*0.7, 0);
+        if (myScene()->doubleArrows){
+            x1 = -1. * mlen; y1 = 0;
+            x2 = mlen*0.7; y2 = 0;
+            w=mlen*2.;
+        }
+        else {
+            x1 = 0; y1 = 0;
+            x2 = mlen*0.7; y2 = 0;
+            w=mlen;
+        }
+        painter->drawLine(x1, y1, x2, y2);
     }
 
     //наконечник стрелки магнитного момента
@@ -61,8 +70,9 @@ void PartGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawPolygon(points,3);
 
     //Id частицы
-    if (myScene()->showId)
-        painter->drawText(0,0,QString::number(part->Id()));
+    if (myScene()->showId) {
+        painter->drawText(x1,y1-0.7*mlen,w,0.7*mlen,Qt::AlignCenter,QString::number(part->Id()));
+    }
 
 }
 
