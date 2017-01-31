@@ -25,9 +25,15 @@ cp -rv examples/ $installPath
 cp -v QtViewer.desktop $desktopPath
 ln -sv $installPath'/QtViewer' $linkPath
 chmod a+x $linkPath
+chmod a+x $installPath'/uninstall.sh'
+
+chmod 644 $desktopPath'/QtViewer.desktop'
+
 echo "---"
 cp -v mfsys-mime.xml $mimePath'/packages'
 update-mime-database $mimePath
+chmod 644 $mimePath'/packages/mfsys-mime.xml'
+
 echo "---"
 cp -v icons/32x32/qtviewer.png $iconsPath'/32x32/apps'
 cp -v icons/48x48/qtviewer.png $iconsPath'/48x48/apps'
@@ -36,5 +42,11 @@ cp -v icons/128x128/qtviewer.png $iconsPath'/128x128/apps'
 cp -v icons/256x256/qtviewer.png $iconsPath'/256x256/apps'
 gtk-update-icon-cache /usr/share/icons/hicolor
 update-desktop-database
+
+chmod 644 $iconsPath'/32x32/apps/qtviewer.png'
+chmod 644 $iconsPath'/48x48/apps/qtviewer.png'
+chmod 644 $iconsPath'/64x64/apps/qtviewer.png'
+chmod 644 $iconsPath'/128x128/apps/qtviewer.png'
+chmod 644 $iconsPath'/256x256/apps/qtviewer.png'
 
 echo "...finished!" 

@@ -22,3 +22,5 @@ qrc_*.cpp
 *-build-*
 build*
 installer*
+
+.fuse*

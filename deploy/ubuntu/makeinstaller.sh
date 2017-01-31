@@ -12,7 +12,7 @@ fi
 
 echo "Making installer..."
 
-installerPath="../output"
+installerPath="../QtViewer-ubuntu"
 iconPath="../../icons"
 examplePath="../examples"
 
@@ -41,6 +41,8 @@ cp -v $iconPath'/icon_64.png' $installerPath'/icons/64x64/qtviewer.png'
 cp -v $iconPath'/icon_128.png' $installerPath'/icons/128x128/qtviewer.png'
 cp -v $iconPath'/icon_256.png' $installerPath'/icons/256x256/qtviewer.png'
 
-tar -cvzf $installerPath'/QtViewer.tar.gz' $installerPath
+tar -cvzf $installerPath'/../QtViewer-ubuntu.tar.gz' $installerPath
+
+rm -rf $installerPath
 
 echo "...finished!" 
