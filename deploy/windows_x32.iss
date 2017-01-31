@@ -2,11 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QtViewer"
-#define MyAppVersion "0.3"
+#define MyAppVersion "0.4"
 #define MyAppPublisher "Far Eastern Federal University, departament of theoretical and experimental physics"
 #define MyAppURL "http://tef-dvfu.ru"
 #define MyAppExeName "QtViewer.exe"
-#define SourceDir "../../build-QtViewer-Desktop_Qt_5_6_0_MSVC2015_32bit-Release/release"
+#define SourceDir "../../build-QtViewer-Desktop_Qt_5_8_0_MSVC2015_32bit-Release/release"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
