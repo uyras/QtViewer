@@ -154,6 +154,36 @@ void MainWindow::loadParticles(QString filename){
     emit ui->surface->dbgSlot();
 }
 
+void MainWindow::exportImage()
+{
+    QSettings settings;
+    QString fname = QFileDialog::getSaveFileName(this,"Выберите файл для сохранения",settings.value("settings/lastPath",QString()).toString());
+
+    if (!fname.isEmpty()) {
+        settings.setValue("settings/lastPath",fname);
+        if (QFile::exists(fname)){
+            QMessageBox msgBox;
+            msgBox.setText(QString("Файл %1 существует.").arg(fname));
+            msgBox.setInformativeText("Перезаписать файл?");
+            msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Cancel);
+
+            if (!msgBox.exec()) {
+                return;
+            }
+        }
+
+        QImage image(1920,1080,QImage::Format_ARGB32);
+        image.fill(Qt::transparent);
+        QPainter painter(&image);
+        painter.setRenderHint(QPainter::Antialiasing);
+        ui->surface->scene()->render(&painter);
+        bool saveResult = image.save(fname);
+        if (!saveResult)
+            qDebug()<<"error saving the file!";
+    }
+}
+
 void MainWindow::toggleAutoCoff(bool ok)
 {
     if (ok){

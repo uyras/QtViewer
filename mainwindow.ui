@@ -360,10 +360,10 @@
   </action>
   <action name="export_jpg">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>Экспорт jpg</string>
+    <string>Экспорт (растр)</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Alt+J</string>
@@ -703,6 +703,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>export_jpg</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>exportImage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>saveParticles()</slot>
@@ -710,5 +726,6 @@
   <slot>clearParticles()</slot>
   <slot>toggleAutoCoff(bool)</slot>
   <slot>saveAsParticles()</slot>
+  <slot>exportImage()</slot>
  </slots>
 </ui>

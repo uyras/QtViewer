@@ -34,6 +34,8 @@ public slots:
 
     void loadParticles(QString filename="");
 
+    void exportImage();
+
     void toggleAutoCoff(bool ok); //переключает коэффиценты из ручного решима в автоматический
 
     void scaleUp(); //Увеличивает масштаб области отображения
