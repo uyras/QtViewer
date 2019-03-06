@@ -190,7 +190,7 @@
        <item>
         <widget class="QPushButton" name="dbgButton">
          <property name="text">
-          <string>dbg</string>
+          <string>центрировать</string>
          </property>
         </widget>
        </item>
@@ -265,7 +265,7 @@
      <x>0</x>
      <y>0</y>
      <width>511</width>
-     <height>19</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">
