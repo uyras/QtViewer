@@ -190,7 +190,7 @@ void MainWindow::toggleAutoCoff(bool ok)
         //считаем авто коэфф.
         const double normalM = 25.,
                 normalSpace=50.;
-        double averM=0., minSpace;
+        double averM=0., minSpace, tempSpace;
         //если частиц в системе слишком мало
         if (sys.size()>1)
             minSpace=sys[0]->pos.space(sys[1]->pos);
@@ -207,7 +207,7 @@ void MainWindow::toggleAutoCoff(bool ok)
             iter2++;
             while (iter2!=sys.parts.end()){
                 temp2 = *iter2;
-                temp1->pos.space(temp2->pos);
+                minSpace = min(minSpace,temp1->pos.space(temp2->pos));
                 iter2++;
             }
             iter1++; i++;
