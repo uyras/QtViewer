@@ -489,7 +489,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Обовить</string>
+    <string>Обновить</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
