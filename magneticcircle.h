@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QGraphicsScene>
 #include <QList>
-#include <mygraphicsscene.h>
+#include "mygraphicsscene.h"
 
 class MagneticCircle : public QObject, public QGraphicsItem
 {

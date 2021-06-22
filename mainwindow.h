@@ -1,11 +1,29 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
+#include <QFileDialog>
+#include <QPainter>
+#include <QMessageBox>
+#include <QTableWidget>
+#include <QtEvents>
 #include <QMainWindow>
+#include <QDebug>
 #include <QLabel>
 #include <QSettings>
+
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <cmath>
+#include <fstream>
 #include <vector>
+#include <map>
+#include <ctime>
+
 #include "PartArray.h"
+#include "Part.h"
+#include "Vect.h"
 #include "mygraphicsview.h"
 #include "systemproperties.h"
 #include "statechangedialog.h"

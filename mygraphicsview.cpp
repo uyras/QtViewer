@@ -43,9 +43,9 @@ MyGraphicsScene *MyGraphicsView::scene(){
 
 void MyGraphicsView::scaleTo(int size){
     double size2 = qreal(size)/50.;
-    QMatrix matrix;
+    QTransform matrix;
     matrix.scale(size2, size2);
-    setMatrix(matrix);
+    setTransform(matrix);
 }
 
 void MyGraphicsView::changeOperateMode(int mode)
@@ -101,7 +101,7 @@ void MyGraphicsView::keyReleaseEvent(QKeyEvent *event){
 void MyGraphicsView::wheelEvent(QWheelEvent *event){
 
     if (!event->modifiers()) {
-        if (event->delta() > 0)
+        if (event->angleDelta().y() > 0)
             emit scaleUp();
         else
             emit scaleDown();

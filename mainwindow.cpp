@@ -1,22 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFileDialog>
-#include <QPainter>
-#include <QMessageBox>
-#include <QTableWidget>
-#include <QtEvents>
-#include <QDebug>
-#include "Part.h"
-#include "Vect.h"
-
-#include <iostream>
-#include <cstring>
-#include <string>
-#include <cmath>
-#include <fstream>
-#include <vector>
-#include <map>
-#include <ctime>
 
 
 
@@ -116,7 +99,7 @@ void MainWindow::saveAsParticles(QString fname){
             }
         }
 
-        sys.save(fname);
+        sys.save(fname.toStdString());
         setFileName(fname);
     }
 }
@@ -137,7 +120,7 @@ void MainWindow::loadParticles(QString filename){
 
     if (!filename.isEmpty()) {
         settings.setValue("settings/lastPath",filename);
-        sys.load(filename);
+        sys.load(filename.toStdString());
         if (sys.size()>0){
             ui->surface->scene()->init(&sys);
             setFileName(filename);
